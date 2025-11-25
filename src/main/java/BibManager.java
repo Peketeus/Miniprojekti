@@ -7,8 +7,10 @@ public class BibManager {
         System.out.println("===== Welcome to Bib Manager! =====");
 
         boolean systemRunning = true;
+
+        Prompter prompter = new Prompter();
         while (systemRunning) {
-            // TODO: Omaan luokkaan kyselyt
+            
             System.out.println("\nWhat would you like to do (1 - 5)?");
             System.out.println("1) Add reference");
             System.out.println("2) Edit reference");
@@ -21,13 +23,17 @@ public class BibManager {
 
             switch (choice) {
                 case "1":
-                    break; // TODO: kutsu luokkaan x, jossa kysellään käyttäjältä viitteen tiedot
+                    prompter.addNewReference();
+                    break;
                 case "2":
-                    break; // TODO: kutsu luokkaan x, jossa listataan olemassa olevat viitteet ja kysytään mitä muokataan
+                    prompter.editReference();
+                    break;
                 case "3":
-                    break; // TODO: kutsu luokkaan x, jossa listataan olemassa olevat viitteet ja kysytään mikä poistetaan
+                    prompter.deleteReference();
+                    break;
                 case "4":
-                    break; // TODO: kutsu luokkaan x, jossa listataan olemassa olevat viitteet
+                    prompter.listReferences();
+                    break; 
                 case "5":
                     System.out.println("\nThank you for using Bib Manager!");
                     systemRunning = false;
