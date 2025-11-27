@@ -27,6 +27,10 @@ public class References {
         return null;
     } 
 
+    public int getSize() {
+        return list.size();
+    }
+    
     // TODO: tee korjaus tähän
     // Tarkistetaan, onko avain olemassa (palautetaan totuusarvo)
     public static boolean isDuplicateKey(String key) {
