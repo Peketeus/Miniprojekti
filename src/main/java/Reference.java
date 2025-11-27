@@ -1,4 +1,17 @@
 public abstract class Reference {
-    // TODO: tarvittavat attribuutit ja metodit, jotka ovat perittäville luokille yhteisiä
-    // tässä on olion alustus
+    protected String key;
+    protected String author;
+    protected String title;
+    protected String year;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void edit(String a, String b) {
+        //tyhjä funktio joka overridataan
+    }
+    public String[] information() {
+        return null;
+    }
 }

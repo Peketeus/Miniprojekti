@@ -10,11 +10,12 @@ public class ArticlePrompter {
      * @return uusi Artikkeli-olio
      */
     public static Article createArticle() {
+        String key = "";
 
         while (true) {
             System.out.print("Enter unique reference key: ");
-            String key = scanner.nextLine();
-            if (!key.isBlank() && !References.isDuplicateKey(key)) break;
+            key = scanner.nextLine();
+            if (!key.isEmpty() && !References.isDuplicateKey(key)) break;
             System.out.println("\nInvalid key. Enter new unique reference key.");
         }
      
@@ -35,8 +36,8 @@ public class ArticlePrompter {
 
         System.out.print("\nEnter pages: ");
         String pages = scanner.nextLine();
-
-        //Tähän tilalle myöhemmin: return new Article()
-        return null;
+        
+        return new Article(key, author, title, journal, year, volume, pages);
     }
+
 }
