@@ -1,12 +1,20 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class References {
     // TODO: metodien toteukset ja luokka viitteelle
-    // private static final List<Reference> ....
+    private static final List<Reference> list = new ArrayList<>();
 
-    // public void add() {}
+    public void add(Reference reference) {
+        list.add(reference);
+        System.out.println("lisätty");
+    }
 
     // public void edit() {}
 
-    // public void delete() {}
+    public void delete(Reference reference) {
+        list.remove(reference);
+    }
 
     // public void printRefeneces() {}
 

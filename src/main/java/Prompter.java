@@ -36,8 +36,8 @@ public class Prompter {
             return;
         }
         
-        // Tähän kutsu referenssilistaan
-
+        references.add(reference);
+        System.out.println("Reference added successfully!");
     }
 
     public void editReference() {
