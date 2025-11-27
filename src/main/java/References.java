@@ -9,10 +9,17 @@ public class References {
         list.add(reference);
     }
 
-    // public void edit() {}
+    public void edit(Reference reference, String atribute, String value) {
+        reference.edit(atribute, value);
+    }
 
     public boolean delete(Reference reference) {
         return list.remove(reference);
+    }
+
+    //testejä varten
+    public String[] information(Reference reference) {
+        return reference.information();
     }
 
     // public void printRefeneces() {}
@@ -30,7 +37,7 @@ public class References {
     public int getSize() {
         return list.size();
     }
-    
+
     // TODO: tee korjaus tähän
     // Tarkistetaan, onko avain olemassa (palautetaan totuusarvo)
     public static boolean isDuplicateKey(String key) {

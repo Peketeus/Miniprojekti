@@ -7,4 +7,11 @@ public abstract class Reference {
     public String getKey() {
         return key;
     }
+
+    public void edit(String a, String b) {
+        //tyhjä funktio joka overridataan
+    }
+    public String[] information() {
+        return null;
+    }
 }
