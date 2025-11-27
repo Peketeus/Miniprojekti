@@ -3,4 +3,8 @@ public abstract class Reference {
     protected String author;
     protected String title;
     protected String year;
+
+    public String getKey() {
+        return key;
+    }
 }

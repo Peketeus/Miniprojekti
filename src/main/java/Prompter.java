@@ -45,6 +45,19 @@ public class Prompter {
     }
     
     public void deleteReference() {
+        String key;
+
+        System.out.println("Enter the reference key: ");
+        while (true) {
+            key = scanner.nextLine();
+            if (key.length() > 0)break;
+        }
+        Reference reference = references.findReferenceByKey(key);
+        if (references.delete(reference)) {
+            System.out.println("Reference removed successfully!");
+        } else {
+            System.out.println("Could not find a reference with the given key");
+        }
 
     }
       
