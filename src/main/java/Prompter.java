@@ -1,10 +1,13 @@
 import java.util.Scanner;
 
 public class Prompter {
-    
-    private static final Scanner scanner = new Scanner(System.in);
-    private References references = new References();
 
+    private final Scanner scanner;
+    private final References references = new References();
+
+    public Prompter(Scanner scanner) {
+        this.scanner = scanner;
+    }
    
     /**
      * Käyttäjän antaman valinnan käsittely 
@@ -15,18 +18,18 @@ public class Prompter {
         Reference reference = null;
         
         switch (type) {
-            case 1:
-
-                reference = ArticlePrompter.createArticle();
+            case 1: {
+                // String key = askUniqueKey();
+                reference = new ArticlePrompter(scanner).create();
                 break;
+            }
             case 2:
-                
+                // reference = new InproceedingsPrompter(scanner).create();
                 break;
             case 3:
-                
+                // reference = new BookPrompter(scanner).create();
                 break;
             case 4:
-
                 return;
             default:
                 System.out.println("Error! Something went wrong");
@@ -43,14 +46,8 @@ public class Prompter {
 
     
     public void editReference() {
-        String key;
+        String key = nonEmptyField("Enter the reference key: ");
 
-        System.out.println("Enter the reference key: ");
-        while (true) {
-            key = scanner.nextLine();
-            if (key.length() > 0)break;
-        }
-        
         //Nyt toimii vain Articlelle
         String choice;
         while (true) {
@@ -71,13 +68,7 @@ public class Prompter {
         
         while (true) { 
             
-            String input;
-            
-            System.out.println("Enter new value: ");
-            while (true) {
-                input = scanner.nextLine();
-                if (input.length() > 0)break;
-            }
+            String input = nonEmptyField("Enter new value: ");
             
             Reference reference = references.findReferenceByKey(key);
             switch (choice) {
@@ -112,13 +103,7 @@ public class Prompter {
     }
     
     public void deleteReference() {
-        String key;
-
-        System.out.println("Enter the reference key: ");
-        while (true) {
-            key = scanner.nextLine();
-            if (key.length() > 0)break;
-        }
+        String key = nonEmptyField("Enter the reference key: ");
         Reference reference = references.findReferenceByKey(key);
         if (references.delete(reference)) {
             System.out.println("Reference removed successfully!");
@@ -127,11 +112,24 @@ public class Prompter {
         }
 
     }
-      
-    public void listReferences() {
 
+    public void listReferences() {
+        references.printRefeneces();
     }
 
+    public String nonEmptyField(String fieldName) {
+        String input;
+
+        while (true) {
+            System.out.println(fieldName);
+            input = scanner.nextLine();
+
+            if (!input.trim().isEmpty()) break;
+            System.out.println("Field can't be empty!\n");
+        }
+
+        return input;
+    }
 
     /**
      * Kysytään käyttäjältä lisättävän lähteen tyyppi

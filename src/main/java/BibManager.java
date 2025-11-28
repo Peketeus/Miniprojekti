@@ -8,7 +8,7 @@ public class BibManager {
 
         boolean systemRunning = true;
 
-        Prompter prompter = new Prompter();
+        Prompter prompter = new Prompter(scanner);
         while (systemRunning) {
             
             System.out.println("\nWhat would you like to do (1 - 5)?");
