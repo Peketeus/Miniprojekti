@@ -114,7 +114,7 @@ public class Prompter {
     }
 
     public void listReferences() {
-        references.printRefeneces();
+        references.printReferences();
     }
 
     public String nonEmptyField(String fieldName) {

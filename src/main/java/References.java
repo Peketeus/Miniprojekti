@@ -22,9 +22,9 @@ public class References {
         return reference.information();
     }
 
-    public void printRefeneces() {
+    public void printReferences() {
         for (Reference ref: list) {
-            System.out.println(ref + "\n");
+            System.out.println(ref);
         }
     }
 

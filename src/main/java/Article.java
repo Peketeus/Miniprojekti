@@ -47,7 +47,7 @@ public class Article extends Reference {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Article:\n");
+        sb.append("Article\n");
         sb.append("key: " + key + "\n");
         if (!author.isEmpty()) { sb.append("author: " + author + "\n"); }
         if (!title.isEmpty()) { sb.append("title: " + title + "\n"); }
