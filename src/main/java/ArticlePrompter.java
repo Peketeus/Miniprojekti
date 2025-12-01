@@ -1,17 +1,20 @@
-import java.util.Scanner;
+//import java.util.Scanner;
 
+/* 
 public class ArticlePrompter {
     private final Scanner scanner;
 
     public ArticlePrompter(Scanner scanner) {
         this.scanner = scanner;
-    }
+    }*/
+
 
     /**
      * Kysytään käyttäjältä artikkeli-lähteen tiedot
      * TODO: Staattisen metodin refaktorointi
      * @return uusi Artikkeli-olio
      */
+    /* 
     public Reference create() {
         String key = "";
 
@@ -43,4 +46,4 @@ public class ArticlePrompter {
         return new Article(key, author, title, journal, year, volume, pages);
     }
 
-}
+} */

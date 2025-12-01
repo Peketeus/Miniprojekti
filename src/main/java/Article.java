@@ -1,4 +1,5 @@
-public class Article extends Reference {
+
+/*public class Article extends Reference {
     private String journal;
     private String volume;
     private String pages;
@@ -59,4 +60,4 @@ public class Article extends Reference {
 
         return sb.toString();
     }
-}
+} */
