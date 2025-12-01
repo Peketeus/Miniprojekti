@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Prompter {
@@ -14,36 +16,45 @@ public class Prompter {
      * ja kutsut valinnan mukaisiin luokkiin.
      */
     public void addNewReference() {
-        int type = askType();
-        Reference reference = null;
-        
-        switch (type) {
-            case 1: {
-                // String key = askUniqueKey();
-                reference = new ArticlePrompter(scanner).create();
+        String type = nonEmptyField("Enter reference type: ");
+        String key = nonEmptyField("Enter reference key: ");
+        Map<String,String> data = new HashMap<>();
+
+        while (true) { 
+            boolean yn = yesOrNo("Do you want add more details? (yes | no) ");
+            if (!yn) {
                 break;
             }
-            case 2:
-                // reference = new InproceedingsPrompter(scanner).create();
-                break;
-            case 3:
-                // reference = new BookPrompter(scanner).create();
-                break;
-            case 4:
-                return;
-            default:
-                System.out.println("Error! Something went wrong");
+
+            String fieldName = nonEmptyField("Enter field name: ");
+            String fieldValue = nonEmptyField("Enter field value: ");
+            data.put(fieldName, fieldValue);
         }
-        if (reference == null) {
-            System.out.println("Error");
+
+        boolean yn = yesOrNo("Do you want to add this reference? (yes | no) ");
+        if (!yn) {
             return;
         }
-        
-        references.add(reference);
-        System.out.println("Reference added successfully!");
+
+        Reference r = new Reference(type, key, data);
+        references.add(r);
+        System.out.println("");
+        System.out.println("Reference " + type + " added!");
     }
 
-
+    private boolean yesOrNo(String question) {
+        while (true) {
+            System.out.print("\n" + question);
+            String answer = scanner.nextLine();
+            if (answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")) {
+                return true;
+            }
+            if (answer.equalsIgnoreCase("n") || answer.equalsIgnoreCase("no")) {
+                return false;
+            }
+            System.out.println("\n Invalid choice try again.");
+        }
+    }
     
     public void editReference() {
         String key = nonEmptyField("Enter the reference key: ");
@@ -131,28 +142,4 @@ public class Prompter {
         return input;
     }
 
-    /**
-     * Kysytään käyttäjältä lisättävän lähteen tyyppi
-     * @return tyypin tunniste kokonaislukuna
-     */
-    private int askType() {
-
-        int type = -1;
-
-        while (true) {
-            System.out.println("\nChoose reference type (1 - 4)");
-            System.out.println("1) Add new journal article");
-            System.out.println("2) Add new conference paper");
-            System.out.println("3) Add new book");
-            System.out.println("4) Cancel");
-
-            type = scanner.nextInt();
-
-            if (type >= 1 && type <= 4) break;
-
-            System.out.println("Invalid choice! Try again.");
-        }
-        
-        return type;
-    }
  }
