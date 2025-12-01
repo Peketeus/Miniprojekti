@@ -1,21 +1,24 @@
 import java.util.Scanner;
 
 public class ArticlePrompter {
+    private final Scanner scanner;
 
-    private static final Scanner scanner = new Scanner(System.in);
+    public ArticlePrompter(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
     /**
      * Kysytään käyttäjältä artikkeli-lähteen tiedot
      * TODO: Staattisen metodin refaktorointi
-     * @param scanner Syötteenlukija
      * @return uusi Artikkeli-olio
      */
-    public static Article createArticle() {
+    public Reference create() {
         String key = "";
 
         while (true) {
             System.out.print("Enter unique reference key: ");
             key = scanner.nextLine();
-            if (!key.isEmpty() && !References.isDuplicateKey(key)) break;
+            if (!key.trim().isEmpty() && !References.isDuplicateKey(key)) break;
             System.out.println("\nInvalid key. Enter new unique reference key.");
         }
      

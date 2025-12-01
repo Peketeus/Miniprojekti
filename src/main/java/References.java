@@ -22,7 +22,11 @@ public class References {
         return reference.information();
     }
 
-    // public void printRefeneces() {}
+    public void printReferences() {
+        for (Reference ref: list) {
+            System.out.println(ref);
+        }
+    }
 
     public Reference findReferenceByKey(String key) {
         // Etsitään lähde viiteavaimen perusteella ja palautetaan lähdeolio
