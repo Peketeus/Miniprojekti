@@ -12,8 +12,8 @@ https://trello.com/b/F1ZtqCsU/log
 
 ### Linkki CI-palveluun
 
-Projektissa käytetään GitHub Actions -CI:tä.
-(Täytetään, kun on luotu)
+Projektissa käytetään GitHub Actions -CI:tä:
+https://github.com/Peketeus/Miniprojekti/actions/workflows/main.yml
 
 ## Asennusohjeet
 
@@ -33,3 +33,8 @@ Käyttöliittymä (tai sen osa) katsotaan olevan valmis, kun kaikki seuraavat eh
 - Koodissa ei ole keskeneräistä koodia.
 - Käyttöliittymä on käyttäjälle selkeä, helppokäyttöinen ja antaa palautteen onnistuneista sekä virheellisistä syötteistä.
 - Koodi noudattaa projektin sovittua rakennetta.
+
+## License
+This project is licensed under the MIT License.
+See the [LICENSE](https://github.com/Peketeus/Miniprojekti/blob/main/LICENSE.txt) file for details.
+
