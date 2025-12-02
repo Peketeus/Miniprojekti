@@ -15,8 +15,11 @@ public class References {
     }
 
     
-    public void edit(Reference reference, String atribute, String value) {
-        reference.edit(atribute, value);
+    public boolean edit(Reference oldRef, Reference newRef) {
+        if (!list.contains(oldRef)) return false;
+        list.remove(oldRef);
+        list.add(newRef);
+        return true;
     }
 
 
