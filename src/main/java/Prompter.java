@@ -10,15 +10,25 @@ public class Prompter {
     public Prompter(Scanner scanner) {
         this.scanner = scanner;
     }
+
    
     /**
-     * Käyttäjän antaman valinnan käsittely 
-     * ja kutsut valinnan mukaisiin luokkiin.
+     * Luo uuden viitteen ja lisää sen viitelistaan.
      */
     public void addNewReference() {
         String type = nonEmptyField("Enter reference type: ");
-        String key = nonEmptyField("Enter reference key: ");
-        Map<String,String> data = new HashMap<>();
+        String key;
+        while (true) { 
+            key = nonEmptyField("Enter reference key: ");
+            boolean dupe = References.isDuplicateKey(key);
+            if (dupe == true) {
+                System.out.println("\nReference with " + key + " already exists!");
+            } else {
+                break;
+            }
+        }
+        
+        Map<String, String> data = new HashMap<>();
 
         while (true) { 
             boolean yn = yesOrNo("Do you want add more details? (yes | no) ");
@@ -26,7 +36,13 @@ public class Prompter {
                 break;
             }
 
-            String fieldName = nonEmptyField("Enter field name: ");
+            String fieldName = nonEmptyField("Enter field name: ").toLowerCase();
+
+            if (data.containsKey(fieldName)) {
+                System.out.println("Field name already exists!");
+                continue;
+            }
+
             String fieldValue = nonEmptyField("Enter field value: ");
             data.put(fieldName, fieldValue);
         }
@@ -42,6 +58,13 @@ public class Prompter {
         System.out.println("Reference " + type + " added!");
     }
 
+
+    /**
+     * Kysyy käyttäjältä kyllä tai ei kysymyksen ja odottaa 
+     * käyttäjän vastausta.
+     * @param question Kysymys käyttäjälle
+     * @return boolean arvon true tai false
+     */
     private boolean yesOrNo(String question) {
         while (true) {
             System.out.print("\n" + question);
@@ -55,11 +78,17 @@ public class Prompter {
             System.out.println("\n Invalid choice try again.");
         }
     }
+
     
+    /**
+     * Muokkaa yksittäistä viitettä
+     */
     public void editReference() {
         String key = nonEmptyField("Enter the reference key: ");
 
-        //Nyt toimii vain Articlelle
+        // Nyt toimii vain Articlelle
+        // TODO: Muokkaa toimimaan Reference luokan kanssa!
+
         String choice;
         while (true) {
             System.out.println("\nWhich property would you like to edit (1 - 7)?");
@@ -74,11 +103,12 @@ public class Prompter {
             
             choice = scanner.nextLine();
             
-            if (choice.length() > 0)break;
+            if (choice.length() > 0) {
+                break;
+            }
         }
         
         while (true) { 
-            
             String input = nonEmptyField("Enter new value: ");
             
             Reference reference = references.findReferenceByKey(key);
@@ -87,32 +117,34 @@ public class Prompter {
                     references.edit(reference, "key", input);
                     break;
                 case "2":
-                    references.edit(reference,"author", input);
+                    references.edit(reference, "author", input);
                     break;
                 case "3":
-                    references.edit(reference,"title", input);
+                    references.edit(reference, "title", input);
                     break;
                 case "4":
-                    references.edit(reference,"journal", input);
+                    references.edit(reference, "journal", input);
                     break;
                 case "5":
-                    references.edit(reference,"year", input);
+                    references.edit(reference, "year", input);
                     break;
                 case "6":
-                    references.edit(reference,"volume", input);
+                    references.edit(reference, "volume", input);
                     break;
                 case "7":
-                    references.edit(reference,"pages", input);
+                    references.edit(reference, "pages", input);
                     break;
                 default:
                     System.out.println("\nInvalid choice! Try again.");
-
-                }
+            }
             break;
-        }
-        
+        }  
     }
+
     
+    /**
+     * Kysyy käyttäjältä viitteen tunnistetta ja poistaa tunnisteen viitteen
+     */
     public void deleteReference() {
         String key = nonEmptyField("Enter the reference key: ");
         Reference reference = references.findReferenceByKey(key);
@@ -121,25 +153,34 @@ public class Prompter {
         } else {
             System.out.println("Could not find a reference with the given key");
         }
-
     }
 
+
+    /**
+     * Kutsuu references luokkaa tulostaakseen kaikki viitteet
+     */
     public void listReferences() {
         references.printReferences();
     }
 
+
+    /**
+     * Kysyy käyttäjältä kysymyksen ja odottaa siihen syötettä
+     * @param fieldName kysymys käyttäjälle
+     * @return
+     */
     public String nonEmptyField(String fieldName) {
         String input;
 
         while (true) {
             System.out.println(fieldName);
-            input = scanner.nextLine();
+            input = scanner.nextLine().trim();
 
-            if (!input.trim().isEmpty()) break;
+            if (!input.trim().isEmpty()) {
+                break;
+            }
             System.out.println("Field can't be empty!\n");
         }
-
         return input;
     }
-
- }
+}
