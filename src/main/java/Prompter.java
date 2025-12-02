@@ -18,9 +18,10 @@ public class Prompter {
     public void addNewReference() {
         String type = nonEmptyField("Enter reference type: ");
         String key;
+        
         while (true) { 
             key = nonEmptyField("Enter reference key: ");
-            boolean dupe = References.isDuplicateKey(key);
+            boolean dupe = references.isDuplicateKey(key);
             if (dupe == true) {
                 System.out.println("\nReference with " + key + " already exists!");
             } else {
@@ -86,7 +87,6 @@ public class Prompter {
     public void editReference() {
         String key = nonEmptyField("Enter the reference key: ");
 
-        // Nyt toimii vain Articlelle
         // TODO: Muokkaa toimimaan Reference luokan kanssa!
 
         String choice;

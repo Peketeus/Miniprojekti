@@ -1,6 +1,10 @@
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Viiteluokka, jonka oliolla pakolliset attribuutit type ja key.
+ * Data-attribuuttiin voidaan lisätä avain-arvopareina viitteelle lisätietoja.
+ */
 public class Reference {
     private String type;                        // "book", "article", jne
     private final String key;                   // BibTeX viiteavain
@@ -12,37 +16,69 @@ public class Reference {
         this.data = (data != null) ? new HashMap<>(data) : new HashMap<>();
     }
 
+
     public String getKey() {
         return key;
     }
+
 
     public String getType() {
         return type;
     }
 
+
     public Map<String, String> getData() {
         return new HashMap<>(data);
     }
+
 
     public String getField(String field) {
         return data.get(field);
     }
 
+
     public void setType(String type) {
         this.type = type;
     }
 
+
     public void setField(String field, String value) {
-        if (field == null) return;
-        if (value == null) data.remove(field);
-        else data.put(field, value);
+        if (field == null) { return; }
+        if (value == null) {
+            data.remove(field);
+        }
+        else {
+            data.put(field, value);
+        }
     }
+
 
     public void edit(String a, String b) {
         setField(a, b);
     }
 
+
     public String[] information() {
         return null;
+    }
+
+
+    /**
+     * Viiteolion muuttaminen merkkijonoksi
+     */
+    public String toString() {
+        StringBuilder referenceString = new StringBuilder();
+        StringBuilder dataString = new StringBuilder();
+
+        referenceString.append("Type: " + this.type + "\n");
+        referenceString.append("Key: " + this.key + "\n");
+
+        for (Map.Entry<String, String> i : data.entrySet()) {
+            dataString.append(i.getKey() + ": " + i.getValue() + "\n");
+        }
+
+        referenceString.append(dataString.toString());
+
+        return referenceString.toString();
     }
 }
