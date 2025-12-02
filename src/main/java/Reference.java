@@ -33,29 +33,7 @@ public class Reference {
 
 
     public String getField(String field) {
-
         return data.get(field);
-    }
-
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-
-    public void setField(String field, String value) {
-        if (field == null) { return; }
-        if (value == null) {
-            data.remove(field);
-        }
-        else {
-            data.put(field, value);
-        }
-    }
-
-
-    public void edit(String a, String b) {
-        setField(a, b);
     }
 
 
@@ -78,7 +56,7 @@ public class Reference {
             dataString.append(i.getKey() + ": " + i.getValue() + "\n");
         }
 
-        referenceString.append(dataString.toString());
+        referenceString.append(dataString);
 
         return referenceString.toString();
     }
