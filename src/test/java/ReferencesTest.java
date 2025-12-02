@@ -1,4 +1,5 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +43,6 @@ public class ReferencesTest {
         references.add(ref);
         assertEquals(1, references.getSize());
     }
-
 
     @Nested
     @DisplayName("When one reference has been added")
@@ -119,6 +119,47 @@ public class ReferencesTest {
             assertEquals(true, references.delete(ref));
             assertEquals(0, references.getSize());
             assertEquals(false, references.delete(ref));
+        }
+
+        @DisplayName("References field can be edited")
+        @Test
+        public void testEditField() {
+            assertEquals("Dan Brown", ref.getData().get("author"));
+            assertEquals(1, references.getSize());
+
+            Map<String, String> newData = new HashMap<>();
+            newData.put("author", "Foo Bar");
+            newData.put("title", "Da Vinci -koodi");
+            newData.put("year", "2006");
+
+            Reference edited = new Reference(ref.getType(), ref.getKey(), newData);
+            references.edit(ref, edited);
+
+            Reference result = references.findReferenceByKey(ref.getKey());
+
+            assertEquals(1, references.getSize());
+            assertEquals("Foo Bar", result.getField("author")); // muuttunut
+            assertEquals("Da Vinci -koodi", result.getField("title")); // ei muuttunut
+            assertEquals("2006", result.getField("year")); // ei muuttunut
+        }
+
+        @DisplayName("New field can be added when editing a reference")
+        @Test
+        public void testEditNewField() {
+            assertNull(ref.getField("journal"));
+
+            Map<String, String> newData = new HashMap<>();
+            newData.put("author", "Dan Brown");
+            newData.put("title", "Da Vinci -koodi");
+            newData.put("year", "2006");
+            newData.put("journal", "Journal");
+
+            Reference edited = new Reference(ref.getType(), ref.getKey(), newData);
+            references.edit(ref, edited);
+
+            Reference result = references.findReferenceByKey(ref.getKey());
+
+            assertEquals("Journal", result.getField("journal"));
         }
     }
 }
