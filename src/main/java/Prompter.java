@@ -30,31 +30,12 @@ public class Prompter {
         }
         
         Map<String, String> data = new HashMap<>();
+        addNewFields(data);
 
-        while (true) { 
-            boolean yn = yesOrNo("Do you want add more details? (yes | no) ");
-            if (!yn) {
-                break;
-            }
+        if (!yesOrNo("Do you want to add this reference? (yes | no) ")) return;
 
-            String fieldName = nonEmptyField("Enter field name: ").toLowerCase();
-
-            if (data.containsKey(fieldName)) {
-                System.out.println("Field name already exists!");
-                continue;
-            }
-
-            String fieldValue = nonEmptyField("Enter field value: ");
-            data.put(fieldName, fieldValue);
-        }
-
-        boolean yn = yesOrNo("Do you want to add this reference? (yes | no) ");
-        if (!yn) {
-            return;
-        }
-
-        Reference r = new Reference(type, key, data);
-        references.add(r);
+        Reference ref = new Reference(type, key, data);
+        references.add(ref);
         System.out.println("");
         System.out.println("Reference " + type + " added!");
     }
@@ -85,60 +66,29 @@ public class Prompter {
      * Muokkaa yksittäistä viitettä
      */
     public void editReference() {
-
         references.printReferences();
+
         String key = nonEmptyField("Enter key of reference to edit: ");
-
         Reference referenceToEdit = references.findReferenceByKey(key);
-
         if (referenceToEdit == null) {
             System.out.println("Can't find reference with given key: " + key);
             return;
         }
 
+        System.out.println("Reference to edit:");
         System.out.println(referenceToEdit);
 
-        String type = referenceToEdit.getType();
-        boolean changeType = yesOrNo("Do you want to change the type? (current: " + type + ") (y/n) ");
+        String type = editType(referenceToEdit.getType());
+        Map<String, String> newData = editExistingFields(referenceToEdit);
+        addNewFields(newData);
 
-        if (changeType) {
-            type = nonEmptyField("Enter new type: ");
+        Reference updatedReference = new Reference(type, referenceToEdit.getKey(), newData);
+
+        if (references.edit(referenceToEdit, updatedReference)) {
+            System.out.println("\n Reference " + updatedReference.getKey() + " updated successfully!");
+        } else {
+            System.out.println("\n Failed to update reference " + referenceToEdit.getKey());
         }
-
-        Map<String, String> newData = new HashMap<>();
-
-        for (Map.Entry<String, String> entry : referenceToEdit.getData().entrySet()) {
-            String fieldName = entry.getKey();
-            String oldValue = entry.getValue();
-            
-            boolean edit = yesOrNo("Do you want to edit field '" + fieldName + "'': "  + oldValue + "? (y/n) ");
-
-            if (edit) {
-                String newValue = nonEmptyField("Enter new field value for " + fieldName + ": ");
-                newData.put(fieldName, newValue);
-            }
-
-            else {
-                newData.put(fieldName, oldValue);
-            }
-        }
-
-        while (true) {
-            boolean edit = yesOrNo("Do you want to add new field? (y/n) ");
-            if (edit) {
-                // TODO: Tähän uuden kentän lisäys
-            }
-            else {
-                break;
-            }
-        }
-
-        Reference updatedReference = new Reference(type, key, newData);
-
-        references.delete(referenceToEdit);
-        references.add(updatedReference);
-        
-        System.out.println("Reference with key " + updatedReference.getKey() + " updated.");
     }
 
     
@@ -146,7 +96,9 @@ public class Prompter {
      * Kysyy käyttäjältä viitteen tunnistetta ja poistaa tunnisteen viitteen
      */
     public void deleteReference() {
-        String key = nonEmptyField("Enter the reference key: ");
+        references.printReferences();
+
+        String key = nonEmptyField("Enter the key of the reference you want to delete: ");
         Reference reference = references.findReferenceByKey(key);
         if (references.delete(reference)) {
             System.out.println("Reference removed successfully!");
@@ -182,5 +134,60 @@ public class Prompter {
             System.out.println("Field can't be empty!\n");
         }
         return input;
+    }
+
+
+    private Map<String, String> editExistingFields(Reference ref) {
+        Map<String, String> data = new HashMap<>();
+
+        for (Map.Entry<String, String> entry : ref.getData().entrySet()) {
+            String field = entry.getKey();
+            String oldValue = entry.getValue();
+
+            boolean editField = yesOrNo("Edit '" + field + "' (current: " + oldValue + ") (yes | no): ");
+
+            if  (editField) {
+                String newValue = editField("New value for " + field + ": ", oldValue);
+                data.put(field, newValue);
+            } else {
+                data.put(field, oldValue);
+            }
+        }
+        return data;
+    }
+
+
+    private void addNewFields(Map<String, String> data) {
+        while (yesOrNo("Do you want to add new field? (yes | no) ")) {
+            String field = nonEmptyField("Enter new field: ");
+
+            // varmistetaan ettei kahta samannimistä kenttää
+            if (data.containsKey(field)) {
+                System.out.println("Field already exists!");
+                continue;
+            }
+
+            String value = nonEmptyField("Enter new value for " + field + ": ");
+            data.put(field, value);
+
+            System.out.println("New field: " + field + " added!");
+        }
+    }
+
+
+    private String editType(String current) {
+        boolean chance = yesOrNo("Do you want to change the type? (current: " + current + ") (y/n) ");
+
+        if (!chance) return current;
+        return editField("Enter new type: ", current);
+    }
+
+
+    // Kysyntä kentän muokkausta varten. Voi jättää tyhjäksi jolloin vanha arvo pysyy kentässä
+    private String editField(String prompt, String oldValue) {
+        System.out.println(prompt + "(leave empty to keep: " + oldValue + ")");
+        String newValue = scanner.nextLine().trim();
+        if (newValue.isEmpty()) { return oldValue; }
+        return newValue;
     }
 }
