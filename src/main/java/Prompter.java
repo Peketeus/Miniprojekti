@@ -176,7 +176,7 @@ public class Prompter {
 
 
     private String editType(String current) {
-        boolean chance = yesOrNo("Do you want to change the type? (current: " + current + ") (y/n) ");
+        boolean chance = yesOrNo("Do you want to change the type? (current: " + current + ") (yes | no) ");
 
         if (!chance) return current;
         return editField("Enter new type: ", current);
