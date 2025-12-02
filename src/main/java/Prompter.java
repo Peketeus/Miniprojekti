@@ -85,60 +85,60 @@ public class Prompter {
      * Muokkaa yksittäistä viitettä
      */
     public void editReference() {
-        String key = nonEmptyField("Enter the reference key: ");
 
-        // TODO: Muokkaa toimimaan Reference luokan kanssa!
+        references.printReferences();
+        String key = nonEmptyField("Enter key of reference to edit: ");
 
-        String choice;
+        Reference referenceToEdit = references.findReferenceByKey(key);
+
+        if (referenceToEdit == null) {
+            System.out.println("Can't find reference with given key: " + key);
+            return;
+        }
+
+        System.out.println(referenceToEdit);
+
+        String type = referenceToEdit.getType();
+        boolean changeType = yesOrNo("Do you want to change the type? (current: " + type + ") (y/n) ");
+
+        if (changeType) {
+            type = nonEmptyField("Enter new type: ");
+        }
+
+        Map<String, String> newData = new HashMap<>();
+
+        for (Map.Entry<String, String> entry : referenceToEdit.getData().entrySet()) {
+            String fieldName = entry.getKey();
+            String oldValue = entry.getValue();
+            
+            boolean edit = yesOrNo("Do you want to edit field '" + fieldName + "'': "  + oldValue + "? (y/n) ");
+
+            if (edit) {
+                String newValue = nonEmptyField("Enter new field value for " + fieldName + ": ");
+                newData.put(fieldName, newValue);
+            }
+
+            else {
+                newData.put(fieldName, oldValue);
+            }
+        }
+
         while (true) {
-            System.out.println("\nWhich property would you like to edit (1 - 7)?");
-            System.out.println("1) Key");
-            System.out.println("2) Author");
-            System.out.println("3) Title");
-            System.out.println("4) Journal");
-            System.out.println("5) Year");
-            System.out.println("6) Volume");
-            System.out.println("7) Pages");
-            System.out.println("Enter your choice: ");
-            
-            choice = scanner.nextLine();
-            
-            if (choice.length() > 0) {
+            boolean edit = yesOrNo("Do you want to add new field? (y/n) ");
+            if (edit) {
+                // TODO: Tähän uuden kentän lisäys
+            }
+            else {
                 break;
             }
         }
+
+        Reference updatedReference = new Reference(type, key, newData);
+
+        references.delete(referenceToEdit);
+        references.add(updatedReference);
         
-        while (true) { 
-            String input = nonEmptyField("Enter new value: ");
-            
-            Reference reference = references.findReferenceByKey(key);
-            switch (choice) {
-                case "1":
-                    references.edit(reference, "key", input);
-                    break;
-                case "2":
-                    references.edit(reference, "author", input);
-                    break;
-                case "3":
-                    references.edit(reference, "title", input);
-                    break;
-                case "4":
-                    references.edit(reference, "journal", input);
-                    break;
-                case "5":
-                    references.edit(reference, "year", input);
-                    break;
-                case "6":
-                    references.edit(reference, "volume", input);
-                    break;
-                case "7":
-                    references.edit(reference, "pages", input);
-                    break;
-                default:
-                    System.out.println("\nInvalid choice! Try again.");
-            }
-            break;
-        }  
+        System.out.println("Reference with key " + updatedReference.getKey() + " updated.");
     }
 
     
