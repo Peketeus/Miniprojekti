@@ -68,7 +68,7 @@ public class References {
      */
     public boolean isDuplicateKey(String key) {
         for (Reference ref : list) {
-            if (ref.getKey().equals(key)) {
+            if (ref.getKey().equalsIgnoreCase(key)) {
                 return true;
             }
         }
