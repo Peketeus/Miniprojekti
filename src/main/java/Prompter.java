@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Prompter {
@@ -8,151 +10,184 @@ public class Prompter {
     public Prompter(Scanner scanner) {
         this.scanner = scanner;
     }
+
    
     /**
-     * Käyttäjän antaman valinnan käsittely 
-     * ja kutsut valinnan mukaisiin luokkiin.
+     * Luo uuden viitteen ja lisää sen viitelistaan.
      */
     public void addNewReference() {
-        int type = askType();
-        Reference reference = null;
-        
-        switch (type) {
-            case 1: {
-                // String key = askUniqueKey();
-                reference = new ArticlePrompter(scanner).create();
-                break;
-            }
-            case 2:
-                // reference = new InproceedingsPrompter(scanner).create();
-                break;
-            case 3:
-                // reference = new BookPrompter(scanner).create();
-                break;
-            case 4:
-                return;
-            default:
-                System.out.println("Error! Something went wrong");
-        }
-        if (reference == null) {
-            System.out.println("Error");
-            return;
-        }
-        
-        references.add(reference);
-        System.out.println("Reference added successfully!");
-    }
-
-
-    
-    public void editReference() {
-        String key = nonEmptyField("Enter the reference key: ");
-
-        //Nyt toimii vain Articlelle
-        String choice;
-        while (true) {
-            System.out.println("\nWhich property would you like to edit (1 - 7)?");
-            System.out.println("1) Key");
-            System.out.println("2) Author");
-            System.out.println("3) Title");
-            System.out.println("4) Journal");
-            System.out.println("5) Year");
-            System.out.println("6) Volume");
-            System.out.println("7) Pages");
-            System.out.println("Enter your choice: ");
-            
-            choice = scanner.nextLine();
-            
-            if (choice.length() > 0)break;
-        }
+        String type = nonEmptyField("Enter reference type: ");
+        String key;
         
         while (true) { 
-            
-            String input = nonEmptyField("Enter new value: ");
-            
-            Reference reference = references.findReferenceByKey(key);
-            switch (choice) {
-                case "1":
-                    references.edit(reference, "key", input);
-                    break;
-                case "2":
-                    references.edit(reference,"author", input);
-                    break;
-                case "3":
-                    references.edit(reference,"title", input);
-                    break;
-                case "4":
-                    references.edit(reference,"journal", input);
-                    break;
-                case "5":
-                    references.edit(reference,"year", input);
-                    break;
-                case "6":
-                    references.edit(reference,"volume", input);
-                    break;
-                case "7":
-                    references.edit(reference,"pages", input);
-                    break;
-                default:
-                    System.out.println("\nInvalid choice! Try again.");
-
-                }
-            break;
+            key = nonEmptyField("Enter reference key: ");
+            boolean dupe = references.isDuplicateKey(key);
+            if (dupe == true) {
+                System.out.println("\nReference with " + key + " already exists!");
+            } else {
+                break;
+            }
         }
         
+        Map<String, String> data = new HashMap<>();
+        addNewFields(data);
+
+        if (!yesOrNo("Do you want to add this reference? (yes | no) ")) return;
+
+        Reference ref = new Reference(type, key, data);
+        references.add(ref);
+        System.out.println("");
+        System.out.println("Reference " + type + " added!");
     }
+
+
+    /**
+     * Kysyy käyttäjältä kyllä tai ei kysymyksen ja odottaa 
+     * käyttäjän vastausta.
+     * @param question Kysymys käyttäjälle
+     * @return boolean arvon true tai false
+     */
+    private boolean yesOrNo(String question) {
+        while (true) {
+            System.out.print("\n" + question);
+            String answer = scanner.nextLine();
+            if (answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")) {
+                return true;
+            }
+            if (answer.equalsIgnoreCase("n") || answer.equalsIgnoreCase("no")) {
+                return false;
+            }
+            System.out.println("\n Invalid choice try again.");
+        }
+    }
+
     
+    /**
+     * Muokkaa yksittäistä viitettä
+     */
+    public void editReference() {
+        references.printReferences();
+
+        String key = nonEmptyField("Enter key of reference to edit: ");
+        Reference referenceToEdit = references.findReferenceByKey(key);
+        if (referenceToEdit == null) {
+            System.out.println("Can't find reference with given key: " + key);
+            return;
+        }
+
+        System.out.println("Reference to edit:");
+        System.out.println(referenceToEdit);
+
+        String type = editType(referenceToEdit.getType());
+        Map<String, String> newData = editExistingFields(referenceToEdit);
+        addNewFields(newData);
+
+        Reference updatedReference = new Reference(type, referenceToEdit.getKey(), newData);
+
+        if (references.edit(referenceToEdit, updatedReference)) {
+            System.out.println("\n Reference " + updatedReference.getKey() + " updated successfully!");
+        } else {
+            System.out.println("\n Failed to update reference " + referenceToEdit.getKey());
+        }
+    }
+
+    
+    /**
+     * Kysyy käyttäjältä viitteen tunnistetta ja poistaa tunnisteen viitteen
+     */
     public void deleteReference() {
-        String key = nonEmptyField("Enter the reference key: ");
+        references.printReferences();
+
+        String key = nonEmptyField("Enter the key of the reference you want to delete: ");
         Reference reference = references.findReferenceByKey(key);
         if (references.delete(reference)) {
             System.out.println("Reference removed successfully!");
         } else {
             System.out.println("Could not find a reference with the given key");
         }
-
     }
 
+
+    /**
+     * Kutsuu references luokkaa tulostaakseen kaikki viitteet
+     */
     public void listReferences() {
         references.printReferences();
     }
 
+
+    /**
+     * Kysyy käyttäjältä kysymyksen ja odottaa siihen syötettä
+     * @param fieldName kysymys käyttäjälle
+     * @return
+     */
     public String nonEmptyField(String fieldName) {
         String input;
 
         while (true) {
             System.out.println(fieldName);
-            input = scanner.nextLine();
+            input = scanner.nextLine().trim();
 
-            if (!input.trim().isEmpty()) break;
+            if (!input.trim().isEmpty()) {
+                break;
+            }
             System.out.println("Field can't be empty!\n");
         }
-
         return input;
     }
 
-    /**
-     * Kysytään käyttäjältä lisättävän lähteen tyyppi
-     * @return tyypin tunniste kokonaislukuna
-     */
-    private int askType() {
 
-        int type = -1;
+    private Map<String, String> editExistingFields(Reference ref) {
+        Map<String, String> data = new HashMap<>();
 
-        while (true) {
-            System.out.println("\nChoose reference type (1 - 4)");
-            System.out.println("1) Add new journal article");
-            System.out.println("2) Add new conference paper");
-            System.out.println("3) Add new book");
-            System.out.println("4) Cancel");
+        for (Map.Entry<String, String> entry : ref.getData().entrySet()) {
+            String field = entry.getKey();
+            String oldValue = entry.getValue();
 
-            type = scanner.nextInt();
+            boolean editField = yesOrNo("Edit '" + field + "' (current: " + oldValue + ") (yes | no): ");
 
-            if (type >= 1 && type <= 4) break;
-
-            System.out.println("Invalid choice! Try again.");
+            if  (editField) {
+                String newValue = editField("New value for " + field + ": ", oldValue);
+                data.put(field, newValue);
+            } else {
+                data.put(field, oldValue);
+            }
         }
-        
-        return type;
+        return data;
     }
- }
+
+
+    private void addNewFields(Map<String, String> data) {
+        while (yesOrNo("Do you want to add new field? (yes | no) ")) {
+            String field = nonEmptyField("Enter new field: ");
+
+            // varmistetaan ettei kahta samannimistä kenttää
+            if (data.containsKey(field)) {
+                System.out.println("Field already exists!");
+                continue;
+            }
+
+            String value = nonEmptyField("Enter new value for " + field + ": ");
+            data.put(field, value);
+
+            System.out.println("New field: " + field + " added!");
+        }
+    }
+
+
+    private String editType(String current) {
+        boolean chance = yesOrNo("Do you want to change the type? (current: " + current + ") (yes | no) ");
+
+        if (!chance) return current;
+        return editField("Enter new type: ", current);
+    }
+
+
+    // Kysyntä kentän muokkausta varten. Voi jättää tyhjäksi jolloin vanha arvo pysyy kentässä
+    private String editField(String prompt, String oldValue) {
+        System.out.println(prompt + "(leave empty to keep: " + oldValue + ")");
+        String newValue = scanner.nextLine().trim();
+        if (newValue.isEmpty()) { return oldValue; }
+        return newValue;
+    }
+}

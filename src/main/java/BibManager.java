@@ -32,6 +32,7 @@ public class BibManager {
                     prompter.deleteReference();
                     break;
                 case "4":
+                    System.out.println("\nHere is the list of existing references:\n");
                     prompter.listReferences();
                     break; 
                 case "5":
