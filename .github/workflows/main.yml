@@ -21,5 +21,4 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - run: cd Miniprojekti
       - run: mvn -B clean verify
