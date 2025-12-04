@@ -43,11 +43,6 @@ public class Reference {
         return data.get(field);
     }
 
-
-    public String[] information() {
-        return null;
-    }
-
     /**
      * Viiteolion muuttaminen merkkijonoksi
      */
