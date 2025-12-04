@@ -8,11 +8,14 @@ import java.util.Map;
 public class Reference {
     private String type;                        // "book", "article", jne
     private final String key;                   // BibTeX viiteavain
+    private String tag;                         // hakua varten, esim. genre
     private final Map<String, String> data;     // kentät viittelle, "Year", "author" 
 
-    public Reference(String type, String key, Map<String, String> data) {
+
+    public Reference(String type, String key, String tag, Map<String, String> data) {
         this.type = type;
         this.key = key;
+        this.tag = (tag != null) ? tag : "";
         this.data = (data != null) ? new HashMap<>(data) : new HashMap<>();
     }
 
@@ -24,6 +27,10 @@ public class Reference {
 
     public String getType() {
         return type;
+    }
+
+    public String getTag() {
+        return tag;
     }
 
 
@@ -41,7 +48,6 @@ public class Reference {
         return null;
     }
 
-
     /**
      * Viiteolion muuttaminen merkkijonoksi
      */
@@ -57,6 +63,10 @@ public class Reference {
         }
 
         referenceString.append(dataString);
+
+        if (tag !=null && !tag.trim().isEmpty()) {
+            referenceString.append("Tags: "). append(this.tag).append("\n");
+        }
 
         return referenceString.toString();
     }

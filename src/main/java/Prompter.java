@@ -32,9 +32,14 @@ public class Prompter {
         Map<String, String> data = new HashMap<>();
         addNewFields(data);
 
-        if (!yesOrNo("Do you want to add this reference? (yes | no) ")) return;
+        System.out.println("Add tags (Press Enter to skip): ");
+        String tag = scanner.nextLine().trim(); 
 
-        Reference ref = new Reference(type, key, data);
+        Reference ref = new Reference(type, key, tag, data);
+
+        if (!yesOrNo("Do you want to add this reference? (yes | no) ")) {
+            return;
+        }
         references.add(ref);
         System.out.println("");
         System.out.println("Reference " + type + " added!");
@@ -79,10 +84,17 @@ public class Prompter {
         System.out.println(referenceToEdit);
 
         String type = editType(referenceToEdit.getType());
+        String tag = editTag(referenceToEdit.getTag());
+
         Map<String, String> newData = editExistingFields(referenceToEdit);
         addNewFields(newData);
 
-        Reference updatedReference = new Reference(type, referenceToEdit.getKey(), newData);
+        Reference updatedReference = new Reference(
+            type, 
+            referenceToEdit.getKey(),
+            tag, 
+            newData
+        );
 
         if (references.edit(referenceToEdit, updatedReference)) {
             System.out.println("\n Reference " + updatedReference.getKey() + " updated successfully!");
@@ -174,12 +186,19 @@ public class Prompter {
         }
     }
 
-
     private String editType(String current) {
         boolean chance = yesOrNo("Do you want to change the type? (current: " + current + ") (yes | no) ");
 
         if (!chance) return current;
         return editField("Enter new type: ", current);
+    }
+
+    private String editTag(String current) {
+        String shown = (current == null || current.isEmpty()) ? "(none)" : current;
+        boolean chance = yesOrNo("Do you want to change the tags? (current: " + shown + ") (yes | no) ");
+
+        if (!chance) return current;
+        return editField("Enter new tags: ", current == null ? "" : current);
     }
 
 

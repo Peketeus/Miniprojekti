@@ -27,12 +27,13 @@ public class ReferencesTest {
 
         String type = "book";
         String key = "DB06";
+        String tag = "romaani";
 
         data.put("author", "Dan Brown");
         data.put("title", "Da Vinci -koodi");
         data.put("year", "2006");
 
-        ref = new Reference(type, key, data);
+        ref = new Reference(type, key, tag, data);
     }
 
 
@@ -55,6 +56,7 @@ public class ReferencesTest {
 
             String type = "book";
             String key = "DB06";
+            String tag = "romaani";
 
             data.put("author", "Dan Brown");
             data.put("title", "Da Vinci -koodi");
@@ -62,7 +64,7 @@ public class ReferencesTest {
 
             System.out.println(references.getSize());
 
-            ref = new Reference(type, key, data);
+            ref = new Reference(type, key, tag, data);
             references.add(ref);
 
             System.out.println(references.getSize());
@@ -74,6 +76,7 @@ public class ReferencesTest {
         public void testAddNew() {
             String type = "article";
             String key = "AH12";
+            String tag = "news";
             Map<String, String> data = new HashMap<>();
             data.put("author", "Arto Hellas");
             data.put("title", "Foo Bar Foo");
@@ -82,7 +85,7 @@ public class ReferencesTest {
 
             assertEquals(1, references.getSize());
 
-            ref = new Reference(type, key, data);
+            ref = new Reference(type, key, tag, data);
             references.add(ref);
 
             assertEquals(2, references.getSize());
@@ -97,12 +100,13 @@ public class ReferencesTest {
 
             String type = "inproceedings";
             String key = "DB06"; // reference with this key already exists
+            String tag = "";
             Map<String, String> data = new HashMap<>();
             data.put("author", "Foo Bar");
 
             assertEquals(1, references.getSize());
 
-            ref = new Reference(type, key, data);
+            ref = new Reference(type, key, tag, data);
             references.add(ref);
 
             String output = outContent.toString();
@@ -132,7 +136,11 @@ public class ReferencesTest {
             newData.put("title", "Da Vinci -koodi");
             newData.put("year", "2006");
 
-            Reference edited = new Reference(ref.getType(), ref.getKey(), newData);
+            Reference edited = new Reference(
+                ref.getType(), 
+                ref.getKey(),
+                ref.getTag(), 
+                newData);
             references.edit(ref, edited);
 
             Reference result = references.findReferenceByKey(ref.getKey());
@@ -154,7 +162,11 @@ public class ReferencesTest {
             newData.put("year", "2006");
             newData.put("journal", "Journal");
 
-            Reference edited = new Reference(ref.getType(), ref.getKey(), newData);
+            Reference edited = new Reference(
+                ref.getType(), 
+                ref.getKey(),
+                ref.getTag(),
+                newData);
             references.edit(ref, edited);
 
             Reference result = references.findReferenceByKey(ref.getKey());
