@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BibManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">BIB Manager</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">BibManager.java</span></div><h1>BibManager.java</h1><pre class="source lang-java linenums">import java.util.Scanner;
+
+<span class="nc" id="L3">public class BibManager {</span>
+<span class="nc" id="L4">    private static final Scanner scanner = new Scanner(System.in);</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L7">        System.out.println(&quot;===== Welcome to Bib Manager! =====&quot;);</span>
+
+<span class="nc" id="L9">        boolean systemRunning = true;</span>
+
+<span class="nc" id="L11">        Prompter prompter = new Prompter(scanner);</span>
+<span class="nc bnc" id="L12" title="All 2 branches missed.">        while (systemRunning) {</span>
+            
+<span class="nc" id="L14">            System.out.println(&quot;\nWhat would you like to do (1 - 5)?&quot;);</span>
+<span class="nc" id="L15">            System.out.println(&quot;1) Add reference&quot;);</span>
+<span class="nc" id="L16">            System.out.println(&quot;2) Edit reference&quot;);</span>
+<span class="nc" id="L17">            System.out.println(&quot;3) Delete reference&quot;);</span>
+<span class="nc" id="L18">            System.out.println(&quot;4) List references&quot;);</span>
+<span class="nc" id="L19">            System.out.println(&quot;5) Exit&quot;);</span>
+<span class="nc" id="L20">            System.out.println(&quot;Enter your choice: &quot;);</span>
+
+<span class="nc" id="L22">            String choice = scanner.nextLine();</span>
+
+<span class="nc bnc" id="L24" title="All 6 branches missed.">            switch (choice) {</span>
+                case &quot;1&quot;:
+<span class="nc" id="L26">                    prompter.addNewReference();</span>
+<span class="nc" id="L27">                    break;</span>
+                case &quot;2&quot;:
+<span class="nc" id="L29">                    prompter.editReference();</span>
+<span class="nc" id="L30">                    break;</span>
+                case &quot;3&quot;:
+<span class="nc" id="L32">                    prompter.deleteReference();</span>
+<span class="nc" id="L33">                    break;</span>
+                case &quot;4&quot;:
+<span class="nc" id="L35">                    System.out.println(&quot;\nHere is the list of existing references:\n&quot;);</span>
+<span class="nc" id="L36">                    prompter.listReferences();</span>
+<span class="nc" id="L37">                    break; </span>
+                case &quot;5&quot;:
+<span class="nc" id="L39">                    System.out.println(&quot;\nThank you for using Bib Manager!&quot;);</span>
+<span class="nc" id="L40">                    systemRunning = false;</span>
+<span class="nc" id="L41">                    return;</span>
+                default:
+<span class="nc" id="L43">                    System.out.println(&quot;\nInvalid choice! Try again.&quot;);</span>
+            }
+<span class="nc" id="L45">        }</span>
+<span class="nc" id="L46">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
