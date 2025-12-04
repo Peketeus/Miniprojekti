@@ -1,5 +1,7 @@
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Paths;
 
 public class References {
     
@@ -12,6 +14,13 @@ public class References {
         }
 
         list.add(reference);
+        
+        try {
+            saveToFile();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        
     }
 
     
@@ -19,20 +28,20 @@ public class References {
         if (!list.contains(oldRef)) return false;
         list.remove(oldRef);
         list.add(newRef);
+
+        try {
+            saveToFile();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
         return true;
     }
 
 
     public boolean delete(Reference reference) {
         return list.remove(reference);
+        //tallentaa prompter luokassa
     }
-
-
-    //testejä varten
-    public String[] information(Reference reference) {
-        return reference.information();
-    }
-
 
     public void printReferences() {
         for (Reference ref: list) {
@@ -74,4 +83,33 @@ public class References {
         }
         return false;
     } 
+
+    public void saveToFile() throws Exception{
+        StringBuilder sb = new StringBuilder();
+        for (Reference ref : list) {
+            StringBuilder refSB = new StringBuilder(ref.toString());
+            
+            sb.append("@" + refSB.substring(6, refSB.indexOf("\n")) + "{");
+            refSB = new StringBuilder(refSB.substring(refSB.indexOf("\n")+1));
+
+            sb.append(refSB.substring(5, refSB.indexOf("\n")) + ",\n");
+            refSB = new StringBuilder(refSB.substring(refSB.indexOf("\n")+1));
+            
+            String temp = refSB.toString();
+            temp = temp.replace(": ", " = {");
+            refSB = new StringBuilder(temp);
+
+            while (true) {
+                if (refSB.indexOf("\n") == -1)break;
+                
+                sb.append("\t" + refSB.substring(0, refSB.indexOf("\n")) + "},\n");
+
+                refSB = new StringBuilder(refSB.substring(refSB.indexOf("\n")+1));
+            }
+            sb.append("}\n\n");
+        }
+
+        Files.write(Paths.get("src/data/references.bib"), sb.toString().getBytes());
+        System.out.println(sb);
+    }
 }
