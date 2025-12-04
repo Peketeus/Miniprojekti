@@ -25,7 +25,9 @@ public class References {
 
     
     public boolean edit(Reference oldRef, Reference newRef) {
-        if (!list.contains(oldRef)) return false;
+        if (!list.contains(oldRef)) {
+            return false;
+        }
         list.remove(oldRef);
         list.add(newRef);
 
@@ -84,27 +86,28 @@ public class References {
         return false;
     } 
 
-    public void saveToFile() throws Exception{
+    public void saveToFile() throws Exception {
         StringBuilder sb = new StringBuilder();
         for (Reference ref : list) {
             StringBuilder refSB = new StringBuilder(ref.toString());
             
             sb.append("@" + refSB.substring(6, refSB.indexOf("\n")) + "{");
-            refSB = new StringBuilder(refSB.substring(refSB.indexOf("\n")+1));
+            refSB = new StringBuilder(refSB.substring(refSB.indexOf("\n") + 1));
 
             sb.append(refSB.substring(5, refSB.indexOf("\n")) + ",\n");
-            refSB = new StringBuilder(refSB.substring(refSB.indexOf("\n")+1));
+            refSB = new StringBuilder(refSB.substring(refSB.indexOf("\n") + 1));
             
             String temp = refSB.toString();
             temp = temp.replace(": ", " = {");
             refSB = new StringBuilder(temp);
 
             while (true) {
-                if (refSB.indexOf("\n") == -1)break;
-                
+                if (refSB.indexOf("\n") == -1) {
+                    break;
+                }
                 sb.append("\t" + refSB.substring(0, refSB.indexOf("\n")) + "},\n");
 
-                refSB = new StringBuilder(refSB.substring(refSB.indexOf("\n")+1));
+                refSB = new StringBuilder(refSB.substring(refSB.indexOf("\n") + 1));
             }
             sb.append("}\n\n");
         }

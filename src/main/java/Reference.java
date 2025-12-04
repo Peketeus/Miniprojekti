@@ -59,7 +59,7 @@ public class Reference {
 
         referenceString.append(dataString);
 
-        if (tag !=null && !tag.trim().isEmpty()) {
+        if (tag != null && !tag.trim().isEmpty()) {
             referenceString.append("Tags: "). append(this.tag).append("\n");
         }
 

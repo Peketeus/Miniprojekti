@@ -1,14 +1,14 @@
 import java.util.Scanner;
 
 public class BibManager {
-    private static final Scanner scanner = new Scanner(System.in);
+    private static final Scanner Scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         System.out.println("===== Welcome to Bib Manager! =====");
 
         boolean systemRunning = true;
 
-        Prompter prompter = new Prompter(scanner);
+        Prompter prompter = new Prompter(Scanner);
         while (systemRunning) {
             
             System.out.println("\nWhat would you like to do (1 - 5)?");
@@ -19,7 +19,7 @@ public class BibManager {
             System.out.println("5) Exit");
             System.out.println("Enter your choice: ");
 
-            String choice = scanner.nextLine();
+            String choice = Scanner.nextLine();
 
             switch (choice) {
                 case "1":

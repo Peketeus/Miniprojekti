@@ -194,7 +194,9 @@ public class Prompter {
     private String editType(String current) {
         boolean chance = yesOrNo("Do you want to change the type? (current: " + current + ") (yes | no) ");
 
-        if (!chance) return current;
+        if (!chance) {
+            return current;
+        }
         return editField("Enter new type: ", current);
     }
 
@@ -202,7 +204,9 @@ public class Prompter {
         String shown = (current == null || current.isEmpty()) ? "(none)" : current;
         boolean chance = yesOrNo("Do you want to change the tags? (current: " + shown + ") (yes | no) ");
 
-        if (!chance) return current;
+        if (!chance) {
+            return current;
+        }
         return editField("Enter new tags: ", current == null ? "" : current);
     }
 
