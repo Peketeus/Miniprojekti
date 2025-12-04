@@ -102,6 +102,11 @@ public class Prompter {
         Reference reference = references.findReferenceByKey(key);
         if (references.delete(reference)) {
             System.out.println("Reference removed successfully!");
+            try {
+                references.saveToFile();
+            } catch (Exception e) {
+                System.err.println(e);
+            }
         } else {
             System.out.println("Could not find a reference with the given key");
         }

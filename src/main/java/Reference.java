@@ -37,11 +37,6 @@ public class Reference {
     }
 
 
-    public String[] information() {
-        return null;
-    }
-
-
     /**
      * Viiteolion muuttaminen merkkijonoksi
      */
