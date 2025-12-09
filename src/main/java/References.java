@@ -58,6 +58,7 @@ public class References {
             for (Reference ref : list) {
                 match = true;
                 System.out.println(ref);
+                System.out.println("----------------------------------");
             }
         }
 
@@ -66,6 +67,7 @@ public class References {
                 if (ref.getType().toLowerCase().contains(searchParam.toLowerCase())) {
                     match = true;
                     System.out.println(ref);
+                    System.out.println("----------------------------------");
                 }
             }
         }
@@ -75,6 +77,7 @@ public class References {
                 if (containsValueCaseInsensitive(ref.getData().values(), searchParam)) {
                     match = true;
                     System.out.println(ref);
+                    System.out.println("----------------------------------");
                 }
             }
         }
@@ -84,6 +87,7 @@ public class References {
                 if (ref.getTag().toLowerCase().contains(searchParam.toLowerCase())) {
                     match = true;
                     System.out.println(ref);
+                    System.out.println("----------------------------------");
                 }
             }
         }
