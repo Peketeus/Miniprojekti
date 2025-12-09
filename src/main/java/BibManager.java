@@ -6,10 +6,8 @@ public class BibManager {
     public static void main(String[] args) {
         System.out.println("===== Welcome to Bib Manager! =====");
 
-        boolean systemRunning = true;
-
         Prompter prompter = new Prompter(SCANNER);
-        while (systemRunning) {
+        while (true) {
             
             System.out.println("\nWhat would you like to do (1 - 5)?");
             System.out.println("1) Add reference");
@@ -32,12 +30,10 @@ public class BibManager {
                     prompter.deleteReference();
                     break;
                 case "4":
-                    System.out.println("\nHere is the list of existing references:\n");
                     prompter.listReferences();
                     break; 
                 case "5":
                     System.out.println("\nThank you for using Bib Manager!");
-                    systemRunning = false;
                     return;
                 default:
                     System.out.println("\nInvalid choice! Try again.");
