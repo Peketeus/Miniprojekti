@@ -134,29 +134,33 @@ public class Prompter {
         String fieldname = null;
 
         if (searchParam != null && !searchParam.equals("")) {
-            System.out.println("\nSearch by: ");
-            System.out.println("1) Type (Article, book, etc)");
-            System.out.println("2) Data (Author, year, etc)");
-            System.out.println("3) Tag (Custom tags)");
-            System.out.println("4) Cancel");
 
-            String choice = scanner.nextLine();
-            System.out.println("\n----------------------------------");
+            while (true) {
+                System.out.println("\nSearch by: ");
+                System.out.println("1) Type (Article, book, etc)");
+                System.out.println("2) Data (Author, year, etc)");
+                System.out.println("3) Tag (Custom tags)");
+                System.out.println("4) Cancel");
 
-            switch (choice) {
-                case "1":
-                    fieldname = "Type";
-                    break;
-                case "2":
-                    fieldname = "Data";
-                    break;
-                case "3":
-                    fieldname = "Tag";
-                    break;
-                case "4":
-                    return;
-                default:
-                    System.out.println("\nInvalid choice! Try again.");
+                String choice = scanner.nextLine();
+
+                switch (choice) {
+                    case "1":
+                        fieldname = "Type";
+                        break;
+                    case "2":
+                        fieldname = "Data";
+                        break;
+                    case "3":
+                        fieldname = "Tag";
+                        break;
+                    case "4":
+                        return;
+                    default:
+                        System.out.println("\nInvalid choice! Try again.");
+                        continue;
+                }
+                break;
             }
         }
 
@@ -185,26 +189,52 @@ public class Prompter {
     }
 
 
+    /**
+     * Lisäkenttien muokkaus ja poisto
+     * @param ref Muokattava viite
+     * @return uusi lisätietodata viitteelle
+     */
     private Map<String, String> editExistingFields(Reference ref) {
         Map<String, String> data = new HashMap<>();
 
         for (Map.Entry<String, String> entry : ref.getData().entrySet()) {
             String field = entry.getKey();
             String oldValue = entry.getValue();
+            
+            while (true) {
+                System.out.println("\nWhat do you want to do?");
+                System.out.println("1) Edit '" + field + "' (current: '" + oldValue + "')");
+                System.out.println("2) Delete '" + field + "'");
+                System.out.println("3) Keep existing value for '" + field + "'");
 
-            boolean editField = yesOrNo("Edit '" + field + "' (current: " + oldValue + ") (yes | no): ");
+                String choice = scanner.nextLine();
 
-            if  (editField) {
-                String newValue = editField("New value for " + field + ": ", oldValue);
-                data.put(field, newValue);
-            } else {
-                data.put(field, oldValue);
-            }
+                switch (choice) {
+                    case "1":
+                        String newValue = editField("New value for " + field + ": ", oldValue);
+                        data.put(field, newValue);
+                        break;
+                    case "2":
+                        System.out.println("Deleted '" + field + "' with value '" + oldValue + "'");
+                        break;
+                    case "3":
+                        data.put(field, oldValue);
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Try again");
+                        continue;
+                }
+                break;
+            } 
         }
         return data;
     }
 
 
+    /**
+     * Uusien kenttien lisäys
+     * @param data viitteen lisätiedot
+     */
     private void addNewFields(Map<String, String> data) {
         while (yesOrNo("Do you want to add new field? (yes | no) ")) {
             String field = nonEmptyField("Enter new field: ");
@@ -222,6 +252,12 @@ public class Prompter {
         }
     }
 
+
+    /**
+     * Viitteen tyypin muokkaus
+     * @param current nykyisen tyypin arvo
+     * @return tyypin arvo merkkijonona
+     */
     private String editType(String current) {
         boolean chance = yesOrNo("Do you want to change the type? (current: " + current + ") (yes | no) ");
 
@@ -231,6 +267,12 @@ public class Prompter {
         return editField("Enter new type: ", current);
     }
 
+
+    /**
+     * Viitteen tagin muokkaus
+     * @param current nykyinen tag
+     * @return tagin arvo merkkijonona
+     */
     private String editTag(String current) {
         String shown = (current == null || current.isEmpty()) ? "(none)" : current;
         boolean chance = yesOrNo("Do you want to change the tags? (current: " + shown + ") (yes | no) ");
@@ -242,11 +284,17 @@ public class Prompter {
     }
 
 
-    // Kysyntä kentän muokkausta varten. Voi jättää tyhjäksi jolloin vanha arvo pysyy kentässä
+    /**
+     * Kysyntä kentän muokkausta varten. Voi jättää tyhjäksi jolloin vanha arvo pysyy kentässä
+     * @param prompt konsoliin tulostettava kysymys
+     * @param oldValue datakentän vanha arvo
+     * @return datakentän uusi arvo
+     */
     private String editField(String prompt, String oldValue) {
         System.out.println(prompt + "(leave empty to keep: " + oldValue + ")");
         String newValue = scanner.nextLine().trim();
         if (newValue.isEmpty()) { return oldValue; }
         return newValue;
     }
+
 }
