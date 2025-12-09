@@ -30,6 +30,9 @@ public class BibManager {
                     prompter.deleteReference();
                     break;
                 case "4":
+                    prompter.listReferences();
+                    break;
+                case "5":
                     System.out.println("\nThank you for using Bib Manager!");
                     return;
                 default:
