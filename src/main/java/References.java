@@ -1,7 +1,7 @@
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.nio.file.Paths;
 
 public class References {
     
@@ -45,9 +45,50 @@ public class References {
         //tallentaa prompter luokassa
     }
 
-    public void printReferences() {
-        for (Reference ref: list) {
-            System.out.println(ref);
+
+    /**
+     * Listaa kaikki viitteet hakuparametrien mukaan
+     * @param searchParam Käyttäjän antama hakusana
+     * @param fieldname Type, data, tag tai null
+     */
+    public void printReferences(String searchParam, String fieldname) {
+        boolean match = false;
+
+        if (searchParam == null || searchParam.equalsIgnoreCase("")) {
+            for (Reference ref : list) {
+                match = true;
+                System.out.println(ref);
+            }
+        }
+
+        else if (fieldname.equals("Type")) {
+            for (Reference ref : list) {
+                if (ref.getType().toLowerCase().contains(searchParam.toLowerCase())) {
+                    match = true;
+                    System.out.println(ref);
+                }
+            }
+        }
+
+        else if (fieldname.equals("Data")) {
+            for (Reference ref : list) {
+                if (containsValueCaseInsensitive(ref.getData().values(), searchParam)) {
+                    match = true;
+                    System.out.println(ref);
+                }
+            }
+        }
+
+        else if (fieldname.equals("Tag")) {
+            for (Reference ref : list) {
+                if (ref.getTag().toLowerCase().contains(searchParam.toLowerCase())) {
+                    match = true;
+                    System.out.println(ref);
+                }
+            }
+        }
+        if (!match) {
+            System.out.println("\nReferences not found");
         }
     }
 
@@ -114,5 +155,21 @@ public class References {
 
         Files.write(Paths.get("src/data/references.bib"), sb.toString().getBytes());
         System.out.println(sb);
+    }
+
+
+    /**
+     * Apufunktio poistamaan isot kirjaimet datahausta
+     * @param values data-arvot
+     * @param searchParam hakuparametri
+     * @return totuusarvo
+     */
+    private boolean containsValueCaseInsensitive(java.util.Collection<String> values, String searchParam) {
+        for (String value : values) {
+            if (value != null && value.toLowerCase().contains(searchParam.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

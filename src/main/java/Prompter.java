@@ -71,7 +71,7 @@ public class Prompter {
      * Muokkaa yksittäistä viitettä
      */
     public void editReference() {
-        references.printReferences();
+        references.printReferences(null, null);
 
         String key = nonEmptyField("Enter key of reference to edit: ");
         Reference referenceToEdit = references.findReferenceByKey(key);
@@ -108,7 +108,7 @@ public class Prompter {
      * Kysyy käyttäjältä viitteen tunnistetta ja poistaa tunnisteen viitteen
      */
     public void deleteReference() {
-        references.printReferences();
+        references.printReferences(null, null);
 
         String key = nonEmptyField("Enter the key of the reference you want to delete: ");
         Reference reference = references.findReferenceByKey(key);
@@ -126,10 +126,41 @@ public class Prompter {
 
 
     /**
-     * Kutsuu references luokkaa tulostaakseen kaikki viitteet
+     * Kutsuu references luokkaa tulostaakseen kaikki viitteet hakuparametrien mukaan
      */
     public void listReferences() {
-        references.printReferences();
+        System.out.println("Enter search parameter or leave blank to list all references: ");
+        String searchParam = scanner.nextLine().trim();
+        String fieldname = null;
+
+        if (searchParam != null && !searchParam.equals("")) {
+            System.out.println("\nSearch by: ");
+            System.out.println("1) Type (Article, book, etc)");
+            System.out.println("2) Data (Author, year, etc)");
+            System.out.println("3) Tag (Custom tags)");
+            System.out.println("4) Cancel");
+
+            String choice = scanner.nextLine();
+            System.out.println("\n----------------------------------");
+
+            switch (choice) {
+                case "1":
+                    fieldname = "Type";
+                    break;
+                case "2":
+                    fieldname = "Data";
+                    break;
+                case "3":
+                    fieldname = "Tag";
+                    break;
+                case "4":
+                    return;
+                default:
+                    System.out.println("\nInvalid choice! Try again.");
+            }
+        }
+
+        references.printReferences(searchParam, fieldname);
     }
 
 
