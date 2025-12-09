@@ -31,7 +31,7 @@ public class BibManager {
                     break;
                 case "4":
                     prompter.listReferences();
-                    break; 
+                    break;
                 case "5":
                     System.out.println("\nThank you for using Bib Manager!");
                     return;
