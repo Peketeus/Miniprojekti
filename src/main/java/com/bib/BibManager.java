@@ -1,3 +1,5 @@
+package com.bib;
+
 import java.util.Scanner;
 
 public class BibManager {
