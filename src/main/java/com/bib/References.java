@@ -1,9 +1,16 @@
 package com.bib;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
+import java.util.Map;
+import java.util.HashMap;
+import java.nio.file.Path;
 
 public class References {
     
@@ -159,8 +166,89 @@ public class References {
             sb.append("}\n\n");
         }
 
-        Files.write(Paths.get("src/data/references.bib"), sb.toString().getBytes());
-        System.out.println(sb);
+        String path = new File("testi.txt").getAbsolutePath();
+        path = path.substring(0,path.indexOf("Miniprojekti") + 13);
+        Files.write(Paths.get(path + "src/data/references.bib"), sb.toString().getBytes());
+    }
+
+
+    public void readFile() {
+        String path = new File("testi.txt").getAbsolutePath();
+        path = path.substring(0,path.indexOf("Miniprojekti") + 13);
+        File myObj = new File(path + "src/data/references.bib");
+
+
+        StringBuilder sb = new StringBuilder();
+
+        try (Scanner myReader = new Scanner(myObj)) {
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                sb.append(data);
+                sb.append("\n");
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File was not found");
+            e.printStackTrace();
+        }
+
+
+        if (sb.toString().trim().length() == 0) {
+            return;
+        }
+
+        String[] t = sb.toString().split("\n");
+        List<String> lines = new ArrayList<>(Arrays.asList(t));
+        lines.add("");
+        List<String> referencesStr = new ArrayList<>();
+
+        while (lines.size() > 1) {
+            StringBuilder ref = new StringBuilder();
+            while (true) {
+                if (lines.size() == 0) {
+                    break;
+                }
+                if (lines.get(0).startsWith("}")) {
+                    lines.remove(0);
+                    lines.remove(0);
+                    break;
+                } 
+                ref.append(lines.get(0) + "\n");
+                lines.remove(0);
+            }
+            referencesStr.add(ref.toString());
+        }
+        
+        for (String str : referencesStr) {
+            String type = str.substring(1, str.indexOf("{"));
+
+
+            String key = str.substring(str.indexOf(("{")) + 1, str.indexOf("\n")-1);
+
+            String tag = null;
+            if (str.contains("Tags = {")) {
+                tag = str.substring(str.lastIndexOf("=") + 3, str.lastIndexOf(",") - 1);
+            }
+
+
+            str = str.substring(str.indexOf("\n"), str.lastIndexOf("\n"));
+
+            int count = str.length() - str.replace("\n", "").length();
+            if (tag != null) {
+                count --;
+            }
+
+            Map<String, String> map = new HashMap<String, String>();
+            for (int i = 0; i <= count; i++) {
+
+                String a = str.substring(str.indexOf("\t") + 1,str.indexOf("=") - 1);
+                String b = str.substring(str.indexOf("{") + 1,str.indexOf("}"));
+                map.put(a, b);
+                str = str.substring(str.indexOf("\n") + 1);
+            }
+
+            Reference ref = new Reference(type, key, tag, map);
+            list.add(ref);
+        }
     }
 
 

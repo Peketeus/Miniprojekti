@@ -7,7 +7,6 @@ public class BibManager {
 
     public static void main(String[] args) {
         System.out.println("===== Welcome to Bib Manager! =====");
-
         Prompter prompter = new Prompter(SCANNER);
         while (true) {
             
