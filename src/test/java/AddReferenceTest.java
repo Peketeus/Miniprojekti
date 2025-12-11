@@ -2,7 +2,6 @@ import com.bib.References;
 import com.bib.Reference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ReferencesTest {
+public class AddReferenceTest {
 
     References references;
     Reference ref;
@@ -24,7 +23,7 @@ public class ReferencesTest {
     
     // Suoritetaan ennen jokaista testiä
     @BeforeEach
-    public void setup() {
+    void setup() {
         references = new References();
         Map<String, String> data = new HashMap<>();
 
@@ -42,7 +41,7 @@ public class ReferencesTest {
 
     @DisplayName("Reference can be added")
     @Test
-    public void testAdd() {
+    void testAdd() {
         assertEquals(0, references.getSize());
         references.add(ref);
         assertEquals(1, references.getSize());
@@ -53,7 +52,7 @@ public class ReferencesTest {
     public class TestOneReferenceAlreadyExists {
 
         @BeforeEach
-        public void setup() {
+        void setup() {
             references = new References();
             Map<String, String> data = new HashMap<>();
 
@@ -65,18 +64,14 @@ public class ReferencesTest {
             data.put("title", "Da Vinci -koodi");
             data.put("year", "2006");
 
-            System.out.println(references.getSize());
-
             ref = new Reference(type, key, tag, data);
             references.add(ref);
-
-            System.out.println(references.getSize());
         }
 
 
         @DisplayName("New reference can be added with unique key")
         @Test
-        public void testAddNew() {
+        void testAddNew() {
             String type = "article";
             String key = "AH12";
             String tag = "news";
@@ -97,7 +92,7 @@ public class ReferencesTest {
         
         @DisplayName("New reference can't be added if key already exists")
         @Test
-        public void testAddExisting() {
+        void testAddExisting() {
             ByteArrayOutputStream outContent = new ByteArrayOutputStream();
             System.setOut(new PrintStream(outContent));
 
@@ -116,65 +111,6 @@ public class ReferencesTest {
             assertTrue(output.contains("already exists"));
 
             assertEquals(1, references.getSize());
-        }
-        
-
-        @DisplayName("Reference can be removed")
-        @Test
-        public void testRemove() {
-            assertEquals(1, references.getSize());
-            assertEquals(true, references.delete(ref));
-            assertEquals(0, references.getSize());
-            assertEquals(false, references.delete(ref));
-        }
-
-        @DisplayName("References field can be edited")
-        @Test
-        public void testEditField() {
-            assertEquals("Dan Brown", ref.getData().get("author"));
-            assertEquals(1, references.getSize());
-
-            Map<String, String> newData = new HashMap<>();
-            newData.put("author", "Foo Bar");
-            newData.put("title", "Da Vinci -koodi");
-            newData.put("year", "2006");
-
-            Reference edited = new Reference(
-                ref.getType(), 
-                ref.getKey(),
-                ref.getTag(), 
-                newData);
-            references.edit(ref, edited);
-
-            Reference result = references.findReferenceByKey(ref.getKey());
-
-            assertEquals(1, references.getSize());
-            assertEquals("Foo Bar", result.getField("author")); // muuttunut
-            assertEquals("Da Vinci -koodi", result.getField("title")); // ei muuttunut
-            assertEquals("2006", result.getField("year")); // ei muuttunut
-        }
-
-        @DisplayName("New field can be added when editing a reference")
-        @Test
-        public void testEditNewField() {
-            assertNull(ref.getField("journal"));
-
-            Map<String, String> newData = new HashMap<>();
-            newData.put("author", "Dan Brown");
-            newData.put("title", "Da Vinci -koodi");
-            newData.put("year", "2006");
-            newData.put("journal", "Journal");
-
-            Reference edited = new Reference(
-                ref.getType(), 
-                ref.getKey(),
-                ref.getTag(),
-                newData);
-            references.edit(ref, edited);
-
-            Reference result = references.findReferenceByKey(ref.getKey());
-
-            assertEquals("Journal", result.getField("journal"));
         }
     }
 }
