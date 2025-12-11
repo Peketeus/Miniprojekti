@@ -26,14 +26,54 @@ public class SearchReferences {
     @Before
     public void setUp() {
         references = new References();
-        references.add(new Reference("Book", "BK00", "important", new HashMap<>()));
-        references.add(new Reference("Article", "AR00", "important",  new HashMap<>()));
-        references.add(new Reference("Book", "BK01", "unfinished", new HashMap<>()));
-        references.add(new Reference("Inproceedings", "IP00", "unfinished", new HashMap<>()));
-        references.add(new Reference("Book", "BK02", "favorite", new HashMap<>()));
-        references.add(new Reference("Article", "AR01", "important", new HashMap<>()));
-        references.add(new Reference("Inproceedings", "IP01", "", new HashMap<>()));
-        references.add(new Reference("My Own Type", "MOT00", "own", new HashMap<>()));
+
+        HashMap<String, String> data1 = new HashMap<>();
+        data1.put("Author", "John Smith");
+        data1.put("Year", "2020");
+        data1.put("Publisher", "Springer");
+        references.add(new Reference("Book", "BK00", "important", data1));
+
+        HashMap<String, String> data2 = new HashMap<>();
+        data2.put("Author", "Alice Doe");
+        data2.put("Year", "2019");
+        data2.put("Journal", "Science Today");
+        references.add(new Reference("Article", "AR00", "important", data2));
+
+        HashMap<String, String> data3 = new HashMap<>();
+        data3.put("Author", "John Smith");
+        data3.put("Year", "2021");
+        data3.put("Publisher", "O'Reilly");
+        references.add(new Reference("Book", "BK01", "unfinished", data3));
+
+        HashMap<String, String> data4 = new HashMap<>();
+        data4.put("Author", "Bob Brown");
+        data4.put("Year", "2018");
+        data4.put("Conference", "ICSE");
+        references.add(new Reference("Inproceedings", "IP00", "unfinished", data4));
+
+        HashMap<String, String> data5 = new HashMap<>();
+        data5.put("Author", "Carol White");
+        data5.put("Year", "2022");
+        data5.put("Publisher", "Pearson");
+        references.add(new Reference("Book", "BK02", "favorite", data5));
+
+        HashMap<String, String> data6 = new HashMap<>();
+        data6.put("Author", "David Green");
+        data6.put("Year", "2021");
+        data6.put("Journal", "Nature");
+        references.add(new Reference("Article", "AR01", "important", data6));
+
+        HashMap<String, String> data7 = new HashMap<>();
+        data7.put("Author", "Bob Brown");
+        data7.put("Year", "2020");
+        data7.put("Conference", "SIGMOD");
+        references.add(new Reference("Inproceedings", "IP01", "", data7));
+
+        HashMap<String, String> data8 = new HashMap<>();
+        data8.put("Author", "Frank Yellow");
+        data8.put("Year", "2023");
+        data8.put("Publisher", "MyPublisher");
+        references.add(new Reference("My Own Type", "MOT00", "own", data8));
     }
 
     // Tagillä haku testi
@@ -115,6 +155,52 @@ public class SearchReferences {
         for (Reference ref: references.getAll()) {
             if (!ref.getType().equalsIgnoreCase("Book")) {
                 Assertions.assertTrue(!output.contains("Type: " + ref.getType()));
+            }
+        }
+    }
+
+
+    // Datalla haun testaus
+    @Given("multiple references with different data exists")
+    public void multiple_references_with_different_data_exists() {
+        // kokeillaan vaan että dataa jokaisessa
+        boolean result = true;
+        for (Reference ref: references.getAll()) {
+            if (ref.getData().isEmpty()) {
+                result = false;
+                break;
+            }
+        }
+
+        if (!result) {
+            throw new AssertionError("Expected multiple references with different data");
+        }
+    }
+
+    @When("I search for references that has author {string}")
+    public void search_references_by_data(String data) {
+        out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        references.printReferences(data, "Data");
+
+        output = out.toString();
+    }
+
+    @Then("I should only see references with author {string}")
+    public void references_with_data(String data) {
+        for (Reference ref: references.getAll()) {
+            if (ref.getField("Author").equalsIgnoreCase(data)) {
+                Assertions.assertTrue(output.contains("Author: " + data));
+            }
+        }
+    }
+
+    @Then("I should not see references with other authors")
+    public void references_with_other_data() {
+        for (Reference ref: references.getAll()) {
+            if (!ref.getField("Author").equalsIgnoreCase("John Smith")) {
+                Assertions.assertTrue(!output.contains("Author: " + ref.getField("Author")));
             }
         }
     }
