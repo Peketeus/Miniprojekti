@@ -178,6 +178,4 @@ public class References {
         }
         return false;
     }
-
-    public List<Reference> getAll() { return list; }
 }
