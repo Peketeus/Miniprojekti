@@ -11,7 +11,6 @@ import java.util.Scanner;
 import java.util.Map;
 import java.util.HashMap;
 
-
 public class References {
     
     private final List<Reference> list = new ArrayList<>();
@@ -141,6 +140,9 @@ public class References {
     } 
 
 
+    /**
+     * Tallentaa viitteet .bib-tiedostoon. Käy läpi tallennettuja viitteitä parseemalla niiden .toString-metodia, poimimalla niistä tiedot oikein, ja tallentaa ne oikeanlaiseen BibTeX-syntaksiin.
+     */
     public void saveToFile() throws Exception {
         StringBuilder sb = new StringBuilder();
         for (Reference ref : list) {
@@ -167,19 +169,21 @@ public class References {
             sb.append("}\n\n");
         }
 
-        String path = new File("testi.txt").getAbsolutePath();
+        String path = new File("testi.txt").getAbsolutePath();  //Etsitään src>data kansio, riippumatta siitä mistä ohjelma käynnistetään.
         path = path.substring(0, path.indexOf("Miniprojekti") + 13);
         Files.write(Paths.get(path + "src/data/references.bib"), sb.toString().getBytes());
     }
 
 
+    /**
+     * Lukee tallennetusta .bib-tiedostosta viitteet ja asettaa ne ohjelmaan.
+     */
     public void readFile() {
-        String path = new File("testi.txt").getAbsolutePath();
+        String path = new File("testi.txt").getAbsolutePath();  //Etsitään src>data kansio, riippumatta siitä mistä ohjelma käynnistetään.
         path = path.substring(0, path.indexOf("Miniprojekti") + 13);
         File myObj = new File(path + "src/data/references.bib");
 
-
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(); //Luodaan string, johon tallennetaan .bib-tiedoston sisältö.
 
         try (Scanner myReader = new Scanner(myObj)) {
             while (myReader.hasNextLine()) {
@@ -192,15 +196,15 @@ public class References {
             e.printStackTrace();
         }
 
-
         if (sb.toString().trim().length() == 0) {
             return;
         }
 
+        //Jaetaan koko tiedosto riveihin, jotta siitä osataan poimia jokainen viite erikseen.
         String[] t = sb.toString().split("\n");
         List<String> lines = new ArrayList<>(Arrays.asList(t));
         lines.add("");
-        List<String> referencesStr = new ArrayList<>();
+        List<String> referencesStr = new ArrayList<>(); //Luodaan myös lista, joihin tallentuu jokainen viite erikseen omana stringinä.
 
         while (lines.size() > 1) {
             StringBuilder ref = new StringBuilder();
@@ -216,12 +220,12 @@ public class References {
                 ref.append(lines.get(0) + "\n");
                 lines.remove(0);
             }
-            referencesStr.add(ref.toString());
+            referencesStr.add(ref.toString()); 
         }
         
+        //Jokaista viitettä kohden käydään poimimassa tiedot, jotta osataan alustaa Reference-olio oikeanlaisesti.
         for (String str : referencesStr) {
             String type = str.substring(1, str.indexOf("{"));
-
 
             String key = str.substring(str.indexOf(("{")) + 1, str.indexOf("\n") - 1);
 
@@ -230,8 +234,7 @@ public class References {
                 tag = str.substring(str.lastIndexOf("=") + 3, str.lastIndexOf(",") - 1);
             }
 
-
-            str = str.substring(str.indexOf("\n"), str.lastIndexOf("\n"));
+            str = str.substring(str.indexOf("\n"), str.lastIndexOf("\n"));  //Poistetaan ensimmäinen ja viimeinen rivi, jotta jäljelle jää vain valinnaiset attribuutit
 
             int count = str.length() - str.replace("\n", "").length();
             if (tag != null) {
@@ -240,7 +243,6 @@ public class References {
 
             Map<String, String> map = new HashMap<String, String>();
             for (int i = 0; i <= count; i++) {
-
                 String a = str.substring(str.indexOf("\t") + 1, str.indexOf("=") - 1);
                 String b = str.substring(str.indexOf("{") + 1, str.indexOf("}"));
                 map.put(a, b);
