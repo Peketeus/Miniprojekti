@@ -141,7 +141,8 @@ public class References {
 
 
     /**
-     * Tallentaa viitteet .bib-tiedostoon. Käy läpi tallennettuja viitteitä parseemalla niiden .toString-metodia, poimimalla niistä tiedot oikein, ja tallentaa ne oikeanlaiseen BibTeX-syntaksiin.
+     * Tallentaa viitteet .bib-tiedostoon. Käy läpi tallennettuja viitteitä parseemalla niiden .toString-metodia,
+     * poimimalla niistä tiedot oikein, ja tallentaa ne oikeanlaiseen BibTeX-syntaksiin.
      */
     public void saveToFile() throws Exception {
         StringBuilder sb = new StringBuilder();
@@ -169,7 +170,8 @@ public class References {
             sb.append("}\n\n");
         }
 
-        String path = new File("testi.txt").getAbsolutePath();  //Etsitään src>data kansio, riippumatta siitä mistä ohjelma käynnistetään.
+        //Etsitään src>data kansio, riippumatta siitä mistä ohjelma käynnistetään
+        String path = new File("testi.txt").getAbsolutePath();
         path = path.substring(0, path.indexOf("Miniprojekti") + 13);
         Files.write(Paths.get(path + "src/data/references.bib"), sb.toString().getBytes());
     }
@@ -179,7 +181,8 @@ public class References {
      * Lukee tallennetusta .bib-tiedostosta viitteet ja asettaa ne ohjelmaan.
      */
     public void readFile() {
-        String path = new File("testi.txt").getAbsolutePath();  //Etsitään src>data kansio, riippumatta siitä mistä ohjelma käynnistetään.
+        //Etsitään src>data kansio, riippumatta siitä mistä ohjelma käynnistetään.
+        String path = new File("testi.txt").getAbsolutePath();
         path = path.substring(0, path.indexOf("Miniprojekti") + 13);
         File myObj = new File(path + "src/data/references.bib");
 
@@ -204,7 +207,8 @@ public class References {
         String[] t = sb.toString().split("\n");
         List<String> lines = new ArrayList<>(Arrays.asList(t));
         lines.add("");
-        List<String> referencesStr = new ArrayList<>(); //Luodaan myös lista, joihin tallentuu jokainen viite erikseen omana stringinä.
+        //Luodaan myös lista, joihin tallentuu jokainen viite erikseen omana stringinä.
+        List<String> referencesStr = new ArrayList<>();
 
         while (lines.size() > 1) {
             StringBuilder ref = new StringBuilder();
@@ -234,7 +238,8 @@ public class References {
                 tag = str.substring(str.lastIndexOf("=") + 3, str.lastIndexOf(",") - 1);
             }
 
-            str = str.substring(str.indexOf("\n"), str.lastIndexOf("\n"));  //Poistetaan ensimmäinen ja viimeinen rivi, jotta jäljelle jää vain valinnaiset attribuutit
+            //Poistetaan ensimmäinen ja viimeinen rivi, jotta jäljelle jää vain valinnaiset attribuutit.
+            str = str.substring(str.indexOf("\n"), str.lastIndexOf("\n"));  
 
             int count = str.length() - str.replace("\n", "").length();
             if (tag != null) {
