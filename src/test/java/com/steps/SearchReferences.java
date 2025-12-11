@@ -57,7 +57,6 @@ public class SearchReferences {
         references.printReferences(tag, "Tag");
 
         output = out.toString();
-        System.out.println("DEBUG OUTPUT:\n" + output);
     }
 
     @Then("I should only see references tagged with {string}")
@@ -89,6 +88,34 @@ public class SearchReferences {
         }
         if (types.size() < 2) {
             throw new AssertionError("Expected multiple types");
+        }
+    }
+
+    @When("I search for references with type {string}")
+    public void search_references_by_type(String type) {
+        out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        references.printReferences(type, "Type");
+
+        output = out.toString();
+    }
+
+    @Then("I should only see references with type {string}")
+    public void references_with_type(String type) {
+        for (Reference ref: references.getAll()) {
+            if (ref.getType().equalsIgnoreCase(type)) {
+                Assertions.assertTrue(output.contains("Type: " + type));
+            }
+        }
+    }
+
+    @Then("I should not see references with other types")
+    public void references_with_other_types() {
+        for (Reference ref: references.getAll()) {
+            if (!ref.getType().equalsIgnoreCase("Book")) {
+                Assertions.assertTrue(!output.contains("Type: " + ref.getType()));
+            }
         }
     }
 }
