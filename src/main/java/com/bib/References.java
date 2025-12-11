@@ -168,14 +168,14 @@ public class References {
         }
 
         String path = new File("testi.txt").getAbsolutePath();
-        path = path.substring(0,path.indexOf("Miniprojekti") + 13);
+        path = path.substring(0, path.indexOf("Miniprojekti") + 13);
         Files.write(Paths.get(path + "src/data/references.bib"), sb.toString().getBytes());
     }
 
 
     public void readFile() {
         String path = new File("testi.txt").getAbsolutePath();
-        path = path.substring(0,path.indexOf("Miniprojekti") + 13);
+        path = path.substring(0, path.indexOf("Miniprojekti") + 13);
         File myObj = new File(path + "src/data/references.bib");
 
 
@@ -223,7 +223,7 @@ public class References {
             String type = str.substring(1, str.indexOf("{"));
 
 
-            String key = str.substring(str.indexOf(("{")) + 1, str.indexOf("\n")-1);
+            String key = str.substring(str.indexOf(("{")) + 1, str.indexOf("\n") - 1);
 
             String tag = null;
             if (str.contains("Tags = {")) {
@@ -235,14 +235,14 @@ public class References {
 
             int count = str.length() - str.replace("\n", "").length();
             if (tag != null) {
-                count --;
+                count--;
             }
 
             Map<String, String> map = new HashMap<String, String>();
             for (int i = 0; i <= count; i++) {
 
-                String a = str.substring(str.indexOf("\t") + 1,str.indexOf("=") - 1);
-                String b = str.substring(str.indexOf("{") + 1,str.indexOf("}"));
+                String a = str.substring(str.indexOf("\t") + 1, str.indexOf("=") - 1);
+                String b = str.substring(str.indexOf("{") + 1, str.indexOf("}"));
                 map.put(a, b);
                 str = str.substring(str.indexOf("\n") + 1);
             }
