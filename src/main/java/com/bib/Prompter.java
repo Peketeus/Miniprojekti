@@ -11,6 +11,7 @@ public class Prompter {
 
     public Prompter(Scanner scanner) {
         this.scanner = scanner;
+        references.readFile();
     }
 
    
