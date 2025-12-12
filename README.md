@@ -17,12 +17,39 @@ https://trello.com/b/F1ZtqCsU/log
 Projektissa käytetään GitHub Actions -CI:tä:
 https://github.com/Peketeus/Miniprojekti/actions/workflows/main.yml
 
+### Vaatimukset:
+- Java (suositus vähintään Java 17)
+
 ## Asennusohjeet
 
-Lataa ohjelma koneellesi ja anna komento:
+1. Siirry projektin Releases-välilehdelle
+2. Lataa uusin version tiedostosta BibManager.jar
+3. Tallenna JAR-tiedosto haluamaasi hakemistoon, esim:
+    - Windows: C:\Users\<käyttäjä>\Downloads\
+    - macOS / Linux: ~/Downloads/
+4. Avaa komentorivi ja siirry samaan kansioon
+5. Käynnistä ohjelma komennolla:
 ```
-java BibManager.java
+java -jar BibManager.jar
 ```
+
+## Käyttöohjeet
+Kun ohjelma käynnistyy, se näyttää päävalikon 
+```
+===== Welcome to Bib Manager! =====
+
+What would you like to do (1 - 5)?
+1) Add reference
+2) Edit reference
+3) Delete reference
+4) List references
+5) Exit
+Enter your choice: 
+```
+Valitse haluamasi toiminto syöttämällä numero 1-5 ja paina Enter.\
+Ohjelma opastaa sen jälkeen eteenpäin kysymällä tarvittavat tiedot
+(esim. viitteen tyypin, avaimen, kentät ja mahdolliset tagit) ja
+antaa palautteen sekä onnistuneista että virheellisistä syötteistä.
 
 ## Definition of Done
 
