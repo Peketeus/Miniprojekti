@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/Peketeus/Miniprojekti/graph/badge.svg?token=Z9ZMHN4XR3)](https://codecov.io/gh/Peketeus/Miniprojekti)
+
 # Miniprojekti
 Ohjelmistotuotanto miniprojekti. Ryhmä 9
 
