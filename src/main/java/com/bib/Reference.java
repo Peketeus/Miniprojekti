@@ -52,8 +52,8 @@ public class Reference {
         StringBuilder referenceString = new StringBuilder();
         StringBuilder dataString = new StringBuilder();
 
-        referenceString.append("Type: " + this.type + "\n");
-        referenceString.append("Key: " + this.key + "\n");
+        referenceString.append("type: " + this.type + "\n");
+        referenceString.append("key: " + this.key + "\n");
 
         for (Map.Entry<String, String> i : data.entrySet()) {
             dataString.append(i.getKey() + ": " + i.getValue() + "\n");
@@ -62,7 +62,7 @@ public class Reference {
         referenceString.append(dataString);
 
         if (tag != null && !tag.trim().isEmpty()) {
-            referenceString.append("Tags: "). append(this.tag).append("\n");
+            referenceString.append("tags: "). append(this.tag).append("\n");
         }
 
         return referenceString.toString();
