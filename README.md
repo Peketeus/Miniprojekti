@@ -23,14 +23,14 @@ https://github.com/Peketeus/Miniprojekti/actions/workflows/main.yml
 ## Asennusohjeet
 
 1. Siirry projektin Releases-välilehdelle
-2. Lataa uusin version tiedostosta BibManager.jar
-3. Tallenna JAR-tiedosto haluamaasi hakemistoon, esim:
+2. Lataa uusin Source code (zip) -paketti
+3. Purkaa zip haluamaasi hakemistoon, esim:
     - Windows: C:\Users\<käyttäjä>\Downloads\
     - macOS / Linux: ~/Downloads/
-4. Avaa komentorivi ja siirry samaan kansioon
+4. Avaa komentorivi ja siirry puretun projektin juureen
 5. Käynnistä ohjelma komennolla:
 ```
-java -jar BibManager.jar
+java BibManager.java
 ```
 
 ## Käyttöohjeet
