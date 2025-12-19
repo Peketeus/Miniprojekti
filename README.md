@@ -4,10 +4,15 @@
 Ohjelmistotuotanto miniprojekti. Ryhmä 9
 
 Smuli99 -> Samu
+
 Peketeus -> Jari-Pekka
+
 ajeerol -> Anniina
+
 viikarma -> Viivi
+
 elmotabe -> Elmo
+
 llalule -> Luukas
 
 ## BibTeX- viitteiden hallintajärjestelmä (CLI)
