@@ -3,6 +3,13 @@
 # Miniprojekti
 Ohjelmistotuotanto miniprojekti. Ryhmä 9
 
+Smuli99 -> Samu
+Peketeus -> Jari-Pekka
+ajeerol -> Anniina
+viikarma -> Viivi
+elmotabe -> Elmo
+llalule -> Luukas
+
 ## BibTeX- viitteiden hallintajärjestelmä (CLI)
 
 Helppokäyttöinen käyttöliittymä BibTeX-viitteiden lisäämiseen, poistamiseen, muokkaamiseen ja listaamiseen.
