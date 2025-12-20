@@ -15,6 +15,9 @@ elmotabe -> Elmo
 
 llalule -> Luukas
 
+## Linkki raporttiin
+https://docs.google.com/document/d/121gn4csT41f5PRWexmfFZeYGxcdBWMeMsUpdmVa7Mp8/edit?usp=sharing
+
 ## BibTeX- viitteiden hallintajärjestelmä (CLI)
 
 Helppokäyttöinen käyttöliittymä BibTeX-viitteiden lisäämiseen, poistamiseen, muokkaamiseen ja listaamiseen.
