@@ -248,7 +248,7 @@ public class Prompter {
                 continue;
             }
 
-            String value = nonEmptyField("Enter new value for " + field + ": ").toLowerCase();
+            String value = nonEmptyField("Enter new value for " + field + ": ");
             data.put(field, value);
 
             System.out.println("New field: " + field + " added!");

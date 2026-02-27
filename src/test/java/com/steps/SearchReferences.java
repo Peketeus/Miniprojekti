@@ -145,7 +145,7 @@ public class SearchReferences {
     public void references_with_type(String type) {
         for (Reference ref: references.getAll()) {
             if (ref.getType().equalsIgnoreCase(type)) {
-                Assertions.assertTrue(output.contains("type: " + type));
+                Assertions.assertTrue(output.contains("Type: " + type));
             }
         }
     }
@@ -154,7 +154,7 @@ public class SearchReferences {
     public void references_with_other_types() {
         for (Reference ref: references.getAll()) {
             if (!ref.getType().equalsIgnoreCase("Book")) {
-                Assertions.assertTrue(!output.contains("type: " + ref.getType()));
+                Assertions.assertTrue(!output.contains("Type: " + ref.getType()));
             }
         }
     }

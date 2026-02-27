@@ -69,9 +69,9 @@ public class SearchReferencesTest {
 
         for (Reference ref : references.getAll()) {
             if (ref.getTag().equalsIgnoreCase(tag)) {
-                assertTrue(output.contains("tags: " + ref.getTag()));
+                assertTrue(output.contains("Tags: " + ref.getTag()));
             } else {
-                assertFalse(output.contains("tags: " + ref.getTag()));
+                assertFalse(output.contains("Tags: " + ref.getTag()));
             }
         }
     }
@@ -90,9 +90,9 @@ public class SearchReferencesTest {
 
         for (Reference ref : references.getAll()) {
             if (ref.getType().equalsIgnoreCase(type)) {
-                assertTrue(output.contains("type: " + ref.getType()));
+                assertTrue(output.contains("Type: " + ref.getType()));
             } else {
-                assertFalse(output.contains("type: " + ref.getType()));
+                assertFalse(output.contains("Type: " + ref.getType()));
             }
         }
     }
